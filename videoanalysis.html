@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>佳琪视频解析 - 模块扩展版</title>
+    <style>
+        /* 保持原科技感样式不变 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+        }
+        body {
+            background: #0f172a;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(56, 189, 248, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+            min-height: 100vh;
+            padding: 30px 20px;
+            color: #e2e8f0;
+        }
+        .grid-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(56, 189, 248, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(56, 189, 248, 0.05) 1px, transparent 1px);
+            pointer-events: none;
+            z-index: -1;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(12px);
+            padding: 40px;
+            border-radius: 12px;
+            border: 1px solid rgba(56, 189, 248, 0.15);
+            box-shadow: 
+                0 0 30px rgba(139, 92, 246, 0.1),
+                0 0 10px rgba(56, 189, 248, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(56, 189, 248, 0.5), 
+                transparent);
+        }
+        .container::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(139, 92, 246, 0.5), 
+                transparent);
+        }
+        .title {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #38bdf8, #8b5cf6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+            letter-spacing: 0.5px;
+        }
+        .title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(90deg, #38bdf8, #8b5cf6);
+            margin: 10px auto 0;
+            border-radius: 1px;
+        }
+        .source-section {
+            margin-bottom: 30px;
+            position: relative;
+        }
+        .source-label {
+            font-size: 18px;
+            color: #94a3b8;
+            margin-right: 10px;
+            display: block;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+        .source-select {
+            width: 100%;
+            padding: 12px 18px;
+            font-size: 16px;
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            border-radius: 8px;
+            color: #e2e8f0;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2394a3b8' viewBox='0 0 16 16'%3E%3Cpath d='M8 11l4-4H4l4 4z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+        }
+        .source-select:hover {
+            border-color: rgba(56, 189, 248, 0.5);
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.1);
+        }
+        .source-select:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+        }
+        .tip {
+            color: #64748b;
+            font-size: 14px;
+            margin-top: 10px;
+            padding-left: 2px;
+            font-style: italic;
+        }
+        .link-section {
+            margin-bottom: 35px;
+            display: flex;
+            gap: 12px;
+        }
+        .link-input {
+            flex: 1;
+            padding: 14px 18px;
+            font-size: 16px;
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            border-radius: 8px;
+            color: #e2e8f0;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        .link-input::placeholder {
+            color: #64748b;
+        }
+        .link-input:hover {
+            border-color: rgba(56, 189, 248, 0.5);
+        }
+        .link-input:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+        }
+        .link-btn {
+            min-width: 140px;
+            padding: 14px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            background: linear-gradient(90deg, #38bdf8, #60a5fa);
+            color: #0f172a;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .link-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.5s ease;
+        }
+        .link-btn:hover {
+            background: linear-gradient(90deg, #2563eb, #38bdf8);
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+        }
+        .link-btn:hover::before {
+            left: 100%;
+        }
+        .link-btn:active {
+            transform: translateY(0);
+        }
+        .statement {
+            padding: 20px;
+            background: rgba(30, 41, 59, 0.4);
+            border-left: 3px solid #8b5cf6;
+            border-radius: 8px;
+            margin-top: 40px;
+            border-top: 1px solid rgba(139, 92, 246, 0.15);
+            border-right: 1px solid rgba(139, 92, 246, 0.15);
+            border-bottom: 1px solid rgba(139, 92, 246, 0.15);
+        }
+        .statement-title {
+            font-weight: 600;
+            color: #c4b5fd;
+            margin-bottom: 10px;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+        }
+        .statement-title::before {
+            content: 'ℹ️';
+            margin-right: 8px;
+        }
+        .statement-content {
+            color: #94a3b8;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .warning {
+            color: #f87171;
+            font-weight: 600;
+        }
+        .decor-element {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            filter: blur(100px);
+            z-index: -1;
+        }
+        .decor-1 {
+            top: -100px;
+            right: -100px;
+            background: rgba(139, 92, 246, 0.2);
+        }
+        .decor-2 {
+            bottom: -100px;
+            left: -100px;
+            background: rgba(56, 189, 248, 0.2);
+        }
+        .error-log {
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(239, 68, 68, 0.1);
+            border-radius: 4px;
+            font-size: 12px;
+            color: #f87171;
+            display: none;
+        }
+
+        /* 新增模块样式 */
+        .modules-section {
+            margin-top: 40px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .module {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(90deg, rgba(56, 189, 248, 0.2), rgba(139, 92, 246, 0.2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #e2e8f0;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            transition: all 0.3s ease;
+        }
+        .module:hover {
+            background: linear-gradient(90deg, rgba(56, 189, 248, 0.3), rgba(139, 92, 246, 0.3));
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+        }
+        .module:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px 20px;
+            }
+            .title {
+                font-size: 26px;
+            }
+            .link-section {
+                flex-direction: column;
+            }
+            .link-btn {
+                width: 100%;
+                min-width: auto;
+            }
+            .module {
+                width: 80px;
+                height: 80px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-pattern"></div>
+    <div class="container">
+        <div class="decor-element decor-1"></div>
+        <div class="decor-element decor-2"></div>
+        <h1 class="title">佳琪视频解析</h1>
+        
+        <!-- 解析源下拉框 -->
+        <div class="source-section">
+            <label class="source-label">解析源选择</label>
+            <select class="source-select" id="sourceSelect">
+                <option value="0" data-url="https://im1907.top/?jx=" data-type="1">纯净</option>
+                <option value="1" data-url="https://www.pouyun.com/?url=" data-type="1">剖元</option>
+                <option value="2" data-url="https://jx.77flv.cc/?url=" data-type="1">七七</option>
+                <option value="3" data-url="https://jiexi.site/?url=" data-type="1">JX</option>
+                <option value="4" data-url="https://www.yemu.xyz/?url=" data-type="1">夜幕</option>
+                <option value="5" data-url="https://jx.2s0.cn/player/?url=" data-type="1">2s0</option>
+                <option value="6" data-url="https://jx.xymp4.cc/?url=" data-type="1">咸鱼</option>
+                <option value="7" data-url="https://jx.nnxv.cn/tv.php?url=" data-type="1">七哥</option>
+                <option value="8" data-url="https://api.qianqi.net/vip/?url=" data-type="1">冰豆</option>
+                <option value="9" data-url="https://www.ckplayer.vip/jiexi/?url=" data-type="1">CK</option>
+                <option value="10" data-url="https://jx.playerjy.com/?url=" data-type="1">JY</option>
+                <option value="11" data-url="https://jx.mmkv.cn/tv.php?url=" data-type="1">mmkv</option>
+                <option value="12" data-url="https://jx.m3u8.tv/jiexi/?url=" data-type="1">M3U8</option>
+                <option value="13" data-url="https://www.playm3u8.cn/jiexi.php?url=" data-type="1">PM</option>
+                <option value="14" data-url="https://vip.bljiex.com/?v=" data-type="1">BL</option>
+                <option value="15" data-url="https://jx.xmflv.com/?url=" data-type="1">虾米</option>
+                <option value="16" data-url="https://yparse.ik9.cc/index.php?url=" data-type="1">YP</option>
+                <option value="17" data-url="https://jx.nnxv.cn/tv.php?url=" data-type="1">XY</option>
+                <option value="18" data-url="https://jx.yparse.com/index.php?url=" data-type="1">云析</option>
+                <option value="19" data-url="https://jx.yangtu.top/?url=" data-type="1">YT</option>
+                <option value="20" data-url="https://jx.xmflv.cc/?url=" data-type="1">OK</option>
+                <option value="21" data-url="https://www.pangujiexi.com/jiexi/?url=" data-type="1">盘古</option>
+                <option value="22" data-url="https://jx.playerjy.com/?url=" data-type="1">JY解析</option>
+                <option value="23" data-url="https://www.8090g.cn/?url=" data-type="1">8090</option>
+                <option value="24" data-url="https://video.isyour.love/player/getplayer?jx=" data-type="0">云搜</option>
+                <option value="25" data-url="https://v.ikanbot.com/search?r=" data-type="0">爱看</option>
+                <option value="26" data-url="https://movie.heheda.top/?v=" data-type="0">风影</option>
+                <option value="27" data-url="https://im1907.top/qwq/?jx=" data-type="0">IM</option>
+                <option value="28" data-url="https://video.isyour.love/player/getplayer?url=" data-type="2">邦宁</option>
+                <option value="29" data-url="https://jx.playerjy.com/?url=" data-type="2">JY</option>
+                <option value="30" data-url="https://www.yemu.xyz/?url=" data-type="2">夜幕</option>
+                <option value="31" data-url="https://yparse.ik9.cc/index.php?url=" data-type="2">云析</option>
+                <option value="32" data-url="https://am1907.top/?jx=" data-type="2">AM</option>
+            </select>
+            <p class="tip">解析失败？尝试切换其他解析源</p>
+            <div class="error-log" id="errorLog"></div>
+        </div>
+
+        <div class="link-section">
+            <input type="text" class="link-input" id="videoLink" placeholder="粘贴视频链接（支持主流平台）" />
+            <button class="link-btn" id="parseBtn">开始解析</button>
+        </div>
+
+        <div class="statement">
+            <div class="statement-title">服务声明</div>
+            <div class="statement-content">
+                本站仅提供视频解析技术服务，所有内容均来自第三方资源。解析过程中若出现广告，<span class="warning">请勿轻信或点击</span>，谨防诈骗及恶意软件。请支持正版内容，遵守相关法律法规。
+            </div>
+        </div>
+
+        <!-- 新增模块区域 -->
+        <div class="modules-section">
+            <!-- 模块1：百度 -->
+            <div class="module" data-link="https://v.qq.com">腾讯视频</div>
+            <div class="module" data-link="https://www.iqiyi.com">爱奇艺</div>
+            <div class="module" data-link="https://www.youku.com">优酷</div>
+            <div class="module" data-link="https://www.mgtv.com">芒果TV</div>
+            <div class="module" data-link="https://www.bilibili.com">哔哩哔哩</div>
+            <div class="module" data-link="https://tv.sohu.com">搜狐视频</div>
+            <div class="module" data-link="https://www.ixigua.com">西瓜视频</div>
+            <div class="module" data-link="https://v.kuaishou.com">快手视频</div>
+            <div class="module" data-link="https://www.douyin.com">抖音</div>
+            <div class="module" data-link="https://www.ppvideo.com">PP视频</div>
+            <div class="module" data-link="https://www.acfun.cn">AcFun</div>
+            <div class="module" data-link="https://www.le.com">乐视视频</div>
+            <div class="module" data-link="https://v.cctv.com">央视影音</div>
+            <div class="module" data-link="https://www.miguvideo.com">咪咕视频</div>
+            <div class="module" data-link="https://haokan.baidu.com">好看视频</div>
+        </div>
+    </div>
+
+    <script>
+        // 解析源和解析逻辑（保持不变）
+        const sourceSelect = document.getElementById('sourceSelect');
+        const videoLink = document.getElementById('videoLink');
+        const parseBtn = document.getElementById('parseBtn');
+
+        parseBtn.addEventListener('click', function() {
+            const selectedOption = sourceSelect.options[sourceSelect.selectedIndex];
+            const parseUrl = selectedOption.getAttribute('data-url');
+            const link = videoLink.value.trim();
+
+            if (!link) {
+                showNotification('请输入视频链接', 'warning');
+                return;
+            }
+
+            if (!link.startsWith('http')) {
+                showNotification('链接格式错误，请以http/https开头', 'error');
+                return;
+            }
+
+            const fullUrl = parseUrl + encodeURIComponent(link);
+            window.open(fullUrl, '_blank');
+        });
+
+        videoLink.addEventListener('paste', function() {
+            setTimeout(() => {
+                const pastedText = videoLink.value.trim();
+                if (pastedText && !pastedText.startsWith('http')) {
+                    showNotification('链接格式可能有误，请检查', 'warning');
+                }
+            }, 100);
+        });
+
+        videoLink.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                parseBtn.click();
+            }
+        });
+
+        // 模块点击跳转逻辑
+        const modules = document.querySelectorAll('.module');
+        modules.forEach(module => {
+            module.addEventListener('click', function() {
+                const link = this.getAttribute('data-link');
+                window.open(link, '_blank');
+            });
+        });
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.position = 'fixed';
+            notification.style.bottom = '20px';
+            notification.style.left = '50%';
+            notification.style.padding = '12px 20px';
+            notification.style.borderRadius = '6px';
+            notification.style.color = '#fff';
+            notification.style.fontSize = '14px';
+            notification.style.zIndex = '9999';
+            notification.style.transition = 'all 0.3s ease';
+            notification.style.opacity = '0';
+            notification.style.transform = 'translate(-50%, 20px)';
+            notification.textContent = message;
+
+            switch(type) {
+                case 'warning':
+                    notification.style.background = 'rgba(245, 158, 11, 0.9)';
+                    notification.style.boxShadow = '0 0 10px rgba(245, 158, 11, 0.3)';
+                    break;
+                case 'error':
+                    notification.style.background = 'rgba(239, 68, 68, 0.9)';
+                    notification.style.boxShadow = '0 0 10px rgba(239, 68, 68, 0.3)';
+                    break;
+                default:
+                    notification.style.background = 'rgba(56, 189, 248, 0.9)';
+                    notification.style.boxShadow = '0 0 10px rgba(56, 189, 248, 0.3)';
+            }
+
+            document.body.appendChild(notification);
+            setTimeout(() => {
+                notification.style.opacity = '1';
+                notification.style.transform = 'translate(-50%, 0)';
+            }, 10);
+
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translate(-50%, 20px)';
+                setTimeout(() => document.body.removeChild(notification), 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
