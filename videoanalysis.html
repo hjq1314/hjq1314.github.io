@@ -3,17 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>佳琪视频解析 - 科技版</title>
+    <title>佳琪视频解析 - 模块扩展版</title>
     <style>
-        /* 基础样式重置 */
+        /* 保持原科技感样式不变 */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
         }
-        
-        /* 科技感背景 */
         body {
             background: #0f172a;
             background-image: 
@@ -23,8 +21,6 @@
             padding: 30px 20px;
             color: #e2e8f0;
         }
-        
-        /* 网格装饰 */
         .grid-pattern {
             position: fixed;
             top: 0;
@@ -38,8 +34,6 @@
             pointer-events: none;
             z-index: -1;
         }
-        
-        /* 页面容器 - 玻璃态效果 */
         .container {
             max-width: 800px;
             margin: 0 auto;
@@ -54,8 +48,6 @@
             position: relative;
             overflow: hidden;
         }
-        
-        /* 容器发光边框 */
         .container::before {
             content: '';
             position: absolute;
@@ -68,7 +60,6 @@
                 rgba(56, 189, 248, 0.5), 
                 transparent);
         }
-        
         .container::after {
             content: '';
             position: absolute;
@@ -81,8 +72,6 @@
                 rgba(139, 92, 246, 0.5), 
                 transparent);
         }
-        
-        /* 标题样式 - 渐变文字 */
         .title {
             text-align: center;
             margin-bottom: 40px;
@@ -95,7 +84,6 @@
             position: relative;
             letter-spacing: 0.5px;
         }
-        
         .title::after {
             content: '';
             display: block;
@@ -105,13 +93,10 @@
             margin: 10px auto 0;
             border-radius: 1px;
         }
-        
-        /* 解析源切换区域 */
         .source-section {
             margin-bottom: 30px;
             position: relative;
         }
-        
         .source-label {
             font-size: 18px;
             color: #94a3b8;
@@ -120,7 +105,6 @@
             margin-bottom: 12px;
             font-weight: 500;
         }
-        
         .source-select {
             width: 100%;
             padding: 12px 18px;
@@ -137,17 +121,14 @@
             background-repeat: no-repeat;
             background-position: right 15px center;
         }
-        
         .source-select:hover {
             border-color: rgba(56, 189, 248, 0.5);
             box-shadow: 0 0 10px rgba(56, 189, 248, 0.1);
         }
-        
         .source-select:focus {
             border-color: #38bdf8;
             box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
         }
-        
         .tip {
             color: #64748b;
             font-size: 14px;
@@ -155,14 +136,11 @@
             padding-left: 2px;
             font-style: italic;
         }
-        
-        /* 链接输入区域 */
         .link-section {
             margin-bottom: 35px;
             display: flex;
             gap: 12px;
         }
-        
         .link-input {
             flex: 1;
             padding: 14px 18px;
@@ -174,21 +152,16 @@
             outline: none;
             transition: all 0.3s ease;
         }
-        
         .link-input::placeholder {
             color: #64748b;
         }
-        
         .link-input:hover {
             border-color: rgba(56, 189, 248, 0.5);
         }
-        
         .link-input:focus {
             border-color: #38bdf8;
             box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
         }
-        
-        /* 科技感按钮 */
         .link-btn {
             min-width: 140px;
             padding: 14px 24px;
@@ -203,7 +176,6 @@
             position: relative;
             overflow: hidden;
         }
-        
         .link-btn::before {
             content: '';
             position: absolute;
@@ -214,22 +186,17 @@
             background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
             transition: all 0.5s ease;
         }
-        
         .link-btn:hover {
             background: linear-gradient(90deg, #2563eb, #38bdf8);
             transform: translateY(-2px);
             box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
         }
-        
         .link-btn:hover::before {
             left: 100%;
         }
-        
         .link-btn:active {
             transform: translateY(0);
         }
-        
-        /* 声明区域 - 卡片式设计 */
         .statement {
             padding: 20px;
             background: rgba(30, 41, 59, 0.4);
@@ -240,7 +207,6 @@
             border-right: 1px solid rgba(139, 92, 246, 0.15);
             border-bottom: 1px solid rgba(139, 92, 246, 0.15);
         }
-        
         .statement-title {
             font-weight: 600;
             color: #c4b5fd;
@@ -249,24 +215,19 @@
             display: flex;
             align-items: center;
         }
-        
         .statement-title::before {
-            content: '??';
+            content: 'ℹ️';
             margin-right: 8px;
         }
-        
         .statement-content {
             color: #94a3b8;
             font-size: 14px;
             line-height: 1.6;
         }
-        
         .warning {
             color: #f87171;
             font-weight: 600;
         }
-        
-        /* 底部装饰元素 */
         .decor-element {
             position: absolute;
             width: 200px;
@@ -275,53 +236,88 @@
             filter: blur(100px);
             z-index: -1;
         }
-        
         .decor-1 {
             top: -100px;
             right: -100px;
             background: rgba(139, 92, 246, 0.2);
         }
-        
         .decor-2 {
             bottom: -100px;
             left: -100px;
             background: rgba(56, 189, 248, 0.2);
         }
-        
-        /* 响应式调整 */
+        .error-log {
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(239, 68, 68, 0.1);
+            border-radius: 4px;
+            font-size: 12px;
+            color: #f87171;
+            display: none;
+        }
+
+        /* 新增模块样式 */
+        .modules-section {
+            margin-top: 40px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .module {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(90deg, rgba(56, 189, 248, 0.2), rgba(139, 92, 246, 0.2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #e2e8f0;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            transition: all 0.3s ease;
+        }
+        .module:hover {
+            background: linear-gradient(90deg, rgba(56, 189, 248, 0.3), rgba(139, 92, 246, 0.3));
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+        }
+        .module:active {
+            transform: translateY(0);
+        }
+
         @media (max-width: 600px) {
             .container {
                 padding: 25px 20px;
             }
-            
             .title {
                 font-size: 26px;
             }
-            
             .link-section {
                 flex-direction: column;
             }
-            
             .link-btn {
                 width: 100%;
                 min-width: auto;
+            }
+            .module {
+                width: 80px;
+                height: 80px;
+                font-size: 14px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- 网格背景装饰 -->
     <div class="grid-pattern"></div>
-    
     <div class="container">
-        <!-- 装饰元素 -->
         <div class="decor-element decor-1"></div>
         <div class="decor-element decor-2"></div>
-        
-        <!-- 标题 -->
         <h1 class="title">佳琪视频解析</h1>
-
-        <!-- 解析源切换 -->
+        
+        <!-- 解析源下拉框 -->
         <div class="source-section">
             <label class="source-label">解析源选择</label>
             <select class="source-select" id="sourceSelect">
@@ -360,30 +356,44 @@
                 <option value="32" data-url="https://am1907.top/?jx=" data-type="2">AM</option>
             </select>
             <p class="tip">解析失败？尝试切换其他解析源</p>
+            <div class="error-log" id="errorLog"></div>
         </div>
 
-        <!-- 链接输入与提交 -->
         <div class="link-section">
             <input type="text" class="link-input" id="videoLink" placeholder="粘贴视频链接（支持主流平台）" />
             <button class="link-btn" id="parseBtn">开始解析</button>
         </div>
 
-        <!-- 声明区域 -->
         <div class="statement">
             <div class="statement-title">服务声明</div>
             <div class="statement-content">
                 本站仅提供视频解析技术服务，所有内容均来自第三方资源。解析过程中若出现广告，<span class="warning">请勿轻信或点击</span>，谨防诈骗及恶意软件。请支持正版内容，遵守相关法律法规。
             </div>
         </div>
+
+        <!-- 新增模块区域 -->
+        <div class="modules-section">
+            <!-- 模块1：百度 -->
+            <div class="module" data-link="https://www.baidu.com">百度</div>
+            <!-- 模块2：示例 -->
+            <div class="module" data-link="https://example.com">示例</div>
+            <!-- 模块3：可复制此段代码添加新模块，修改名称和data-link即可 -->
+            <div class="module" data-link="https://www.taobao.com">淘宝</div>
+            <div class="module" data-link="https://www.jd.com">京东</div>
+            <div class="module" data-link="https://www.163.com">网易</div>
+            <div class="module" data-link="https://www.sina.com.cn">新浪</div>
+            <div class="module" data-link="https://www.qq.com">腾讯</div>
+            <div class="module" data-link="https://www.bilibili.com">哔哩哔哩</div>
+            <div class="module" data-link="https://www.zhihu.com">知乎</div>
+        </div>
     </div>
 
     <script>
-        // 获取DOM元素
+        // 解析源和解析逻辑（保持不变）
         const sourceSelect = document.getElementById('sourceSelect');
         const videoLink = document.getElementById('videoLink');
         const parseBtn = document.getElementById('parseBtn');
 
-        // 解析按钮点击事件
         parseBtn.addEventListener('click', function() {
             const selectedOption = sourceSelect.options[sourceSelect.selectedIndex];
             const parseUrl = selectedOption.getAttribute('data-url');
@@ -403,7 +413,6 @@
             window.open(fullUrl, '_blank');
         });
 
-        // 粘贴事件验证
         videoLink.addEventListener('paste', function() {
             setTimeout(() => {
                 const pastedText = videoLink.value.trim();
@@ -413,21 +422,26 @@
             }, 100);
         });
 
-        // 回车键解析
         videoLink.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 parseBtn.click();
             }
         });
 
-        // 科技感通知提示
+        // 模块点击跳转逻辑
+        const modules = document.querySelectorAll('.module');
+        modules.forEach(module => {
+            module.addEventListener('click', function() {
+                const link = this.getAttribute('data-link');
+                window.open(link, '_blank');
+            });
+        });
+
         function showNotification(message, type = 'info') {
-            // 创建通知元素
             const notification = document.createElement('div');
             notification.style.position = 'fixed';
             notification.style.bottom = '20px';
             notification.style.left = '50%';
-            notification.style.transform = 'translateX(-50%)';
             notification.style.padding = '12px 20px';
             notification.style.borderRadius = '6px';
             notification.style.color = '#fff';
@@ -438,7 +452,6 @@
             notification.style.transform = 'translate(-50%, 20px)';
             notification.textContent = message;
 
-            // 根据类型设置样式
             switch(type) {
                 case 'warning':
                     notification.style.background = 'rgba(245, 158, 11, 0.9)';
@@ -453,22 +466,16 @@
                     notification.style.boxShadow = '0 0 10px rgba(56, 189, 248, 0.3)';
             }
 
-            // 添加到页面
             document.body.appendChild(notification);
-
-            // 显示动画
             setTimeout(() => {
                 notification.style.opacity = '1';
                 notification.style.transform = 'translate(-50%, 0)';
             }, 10);
 
-            // 自动消失
             setTimeout(() => {
                 notification.style.opacity = '0';
                 notification.style.transform = 'translate(-50%, 20px)';
-                setTimeout(() => {
-                    document.body.removeChild(notification);
-                }, 300);
+                setTimeout(() => document.body.removeChild(notification), 300);
             }, 3000);
         }
     </script>
