@@ -1,64 +1,64 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>佳琪视频解析 - 模块扩展版</title>
-    <style>
+<!DOCTYPE html>   <！DOCTYPE html >
+<html    < html lang = "应用" >lang="zh-CN">
+<head   头>
+    <meta   元 charset   字符集="UTF-8"   “utf - 8”>
+    <meta   元 name   名字="viewport"   “视口” content   内容="width=device-width, initial-scale=1.0"“宽度=设备宽度,初始= 1.0”>
+    <title   标题>佳琪视频解析 - 你值得拥有</title   标题>
+       < >风格<style   风格>
         /* 保持原科技感样式不变 */
         * {
-            margin: 0;
-            padding: 0;
+               保证金:0;margin   保证金: 0;
+               填充:0;padding   填充: 0;
             box-sizing: border-box;
-            font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+            font-family：微软雅黑；font-family   字体类型: "Segoe UI"   “Segoe iu”, "Microsoft YaHei", sans-serif;
         }
-        body {
-            background: #0f172a;
-            background-image: 
-                radial-gradient(circle at 25% 25%, rgba(56, 189, 248, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 75% 75%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
-            min-height: 100vh;
-            padding: 30px 20px;
-            color: #e2e8f0;
+           身体{body   身体 {
+               背景:# 0 f172a;background   背景: #0f172a;
+               背景图片:background-image   背景图像: 
+                径向梯度（圆形25% 25%，rgba(56, 189, 248, 0.1) 0%，透明50%），radial-gradient   径向渐变(circle   圆 at   在 25% 25%, rgba(56, 189, 248, 0.1) 0%, transparent   透明的 50%),
+                径向梯度（圆形75% 75%，rgba(139, 92, 246, 0.1) 0%，透明50%）；radial-gradient   径向渐变(circle   圆   圆 at   在   在 75% 75%, rgba(139, 92, 246, 0.1) 0%, transparent   透明的 50%);
+               最小高度:100 vh;min-height   最小高度   最小高度: 100vh;
+               填充：30px 20px；padding   填充   填充: 30px 20px;
+               颜色:# e2e8f0;color   颜色   颜色: #e2e8f0;
         }
-        .grid-pattern {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-size: 40px 40px;
-            background-image: 
-                linear-gradient(to right, rgba(56, 189, 248, 0.05) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(56, 189, 248, 0.05) 1px, transparent 1px);
-            pointer-events: none;
-            z-index: -1;
+        .   ．网格图形{grid-pattern   网格模式   网格模式 {
+               位置:固定;position   位置   位置: fixed   固定   固定;
+               上图:0;top   前   前: 0;
+               左:0;left   左   左: 0;
+               宽度:100%;width   宽度   宽度: 100%;
+               高度:100%;height   高度   高度: 100%;
+            Background-size: 40px；background-size: 40px 40px;
+               背景图片:background-image   背景图像   背景图像: 
+                线性渐变（向右，rgba(56,189,248,0.05) 1px，透明1px），linear-gradient(to   来   来 right   正确的   正确的, rgba(56, 189, 248, 0.05) 1px, transparent   透明的   透明的 1px),
+                线性渐变（至底，rgba(56,189,248,0.05) 1px，透明1px）；linear-gradient(to   来   来 bottom   底   底, rgba(56, 189, 248, 0.05) 1px, transparent   透明的   透明的 1px);
+               pointer-events:没有;pointer-events: none;
+               z - index: 1;z-index: -1;
         }
         .container {
             max-width: 800px;
-            margin: 0 auto;
-            background: rgba(15, 23, 42, 0.7);
+            margin   保证金: 0 auto;
+            background   背景: rgba(15, 23, 42, 0.7);
             backdrop-filter: blur(12px);
-            padding: 40px;
+            padding   填充: 40px;
             border-radius: 12px;
             border: 1px solid rgba(56, 189, 248, 0.15);
             box-shadow: 
                 0 0 30px rgba(139, 92, 246, 0.1),
                 0 0 10px rgba(56, 189, 248, 0.1);
-            position: relative;
+            position   位置: relative;
             overflow: hidden;
         }
         .container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, 
-                transparent, 
+            content   内容: '';
+            position   位置: absolute;
+            top   前: 0;   上图:0;
+            left   左: 0;   左:0;
+            right   正确的: 0;
+            height   高度: 1px;
+            background   背景: linear-gradient   线性渐变(90deg, 
+                transparent   透明的, 
                 rgba(56, 189, 248, 0.5), 
-                transparent);
+                transparent   透明的);
         }
         .container::after {
             content: '';
@@ -481,3 +481,4 @@
     </script>
 </body>
 </html>
+
