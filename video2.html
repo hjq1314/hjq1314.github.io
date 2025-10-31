@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VVVVVIP视频解析</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "Arial", sans-serif;
+      background: #0a192f;
+      background-image: 
+        radial-gradient(circle, #00f0ff10 1px, transparent 1px),
+        radial-gradient(circle, #7b2ffd10 1px, transparent 1px);
+      background-size: 40px 40px;
+      background-position: 0 0, 20px 20px;
+      color: #e0f7ff;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    /* 整合式科技卡片 */
+    .tech-card {
+      width: 100%;
+      max-width: 320px;
+      background: linear-gradient(135deg, #ff7d00, #ff5e00);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.3), 0 0 40px rgba(123, 47, 253, 0.2);
+      position: relative;
+      border: 2px solid transparent;
+      background-clip: padding-box;
+    }
+    .tech-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: 12px;
+      border: 2px solid rgba(0, 240, 255, 0.5);
+      z-index: -1;
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.5), 0 0 30px rgba(123, 47, 253, 0.3);
+    }
+    /* 顶部标题区域 */
+    .card-header {
+      padding: 15px 20px 0;
+      text-align: center;
+    }
+    .card-header h1 {
+      font-size: 20px;
+      color: white;
+      margin-bottom: 5px;
+    }
+    .badge {
+      width: 80px;
+      height: 80px;
+      background: #ff7d00;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+    .badge span {
+      font-size: 14px;
+      font-weight: bold;
+      color: white;
+      transform: rotate(-10deg);
+      text-align: center;
+    }
+    /* 主视觉文字 */
+    .main-text {
+      padding: 20px;
+      text-align: center;
+    }
+    .main-text h2 {
+      font-size: 60px;
+      color: white;
+      line-height: 1.1;
+      margin-bottom: 10px;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+    .main-text p {
+      font-size: 22px;
+      color: white;
+      font-weight: bold;
+      background: linear-gradient(90deg, #00f0ff, #7b2ffd);
+      display: inline-block;
+      padding: 5px 15px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+    }
+    .main-text small {
+      font-size: 16px;
+      color: white;
+      opacity: 0.9;
+    }
+    /* 复制按钮 */
+    .copy-area {
+      padding: 15px 20px 20px;
+    }
+    .copy-btn {
+      width: 100%;
+      padding: 12px 0;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      background: linear-gradient(90deg, #00f0ff33, #7b2ffd33);
+      color: white;
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.4), 0 0 20px rgba(123, 47, 253, 0.2);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+    }
+    .copy-btn:hover {
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.6), 0 0 30px rgba(123, 47, 253, 0.4);
+      transform: translateY(-2px);
+    }
+    /* 复制提示 */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      padding: 10px 20px;
+      background: rgba(10, 25, 47, 0.8);
+      border-radius: 8px;
+      opacity: 0;
+      transition: opacity 0.3s;
+      border: 1px solid rgba(0, 240, 255, 0.3);
+    }
+    .toast.show {
+      opacity: 1;
+    }
+    /* 装饰元素 */
+    .decor { position: fixed; z-index: -1; border-radius: 50%; }
+    .decor-1 {
+      top: 10%;
+      right: 5%;
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(45deg, #00f0ff33, #7b2ffd33);
+      animation: float 15s linear infinite;
+    }
+    .decor-2 {
+      bottom: 15%;
+      left: 8%;
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #00f0ff22, #7b2ffd22);
+      animation: float 20s linear 3s infinite;
+    }
+    @keyframes float {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(15px, -15px) rotate(90deg); }
+      50% { transform: translate(0, 15px) rotate(180deg); }
+      75% { transform: translate(-15px, -8px) rotate(270deg); }
+      100% { transform: translate(0, 0) rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <!-- 装饰元素 -->
+  <div class="decor decor-1"></div>
+  <div class="decor decor-2"></div>
+
+  <!-- 整合式科技卡片 -->
+  <div class="tech-card">
+    <!-- 顶部标题 -->
+    <div class="card-header">
+      <h1>VVVVVIP视频解析</h1>
+      <div class="badge">
+        <span>视频<br>解析</span>
+      </div>
+    </div>
+    <!-- 主视觉文字 -->
+    <div class="main-text">
+      <h2>佳琪</h2>
+      <p>所有电视剧</p>
+      <small>每天无限免费看</small>
+    </div>
+    <!-- 复制区域 -->
+    <div class="copy-area">
+      <button class="copy-btn" id="copyBtn">点击复制链接</button>
+    </div>
+  </div>
+
+  <!-- 复制提示 -->
+  <div class="toast" id="toast">链接已复制到剪贴板</div>
+
+  <!-- 复制功能脚本 -->
+  <script>
+    const copyBtn = document.getElementById('copyBtn');
+    const toast = document.getElementById('toast');
+    const targetUrl = "https://hjq1314.github.io/videoanalysis.html"; // 目标链接
+
+    copyBtn.addEventListener('click', () => {
+      navigator.clipboard.writeText(targetUrl)
+        .then(() => {
+          toast.classList.add('show');
+          setTimeout(() => {
+            toast.classList.remove('show');
+          }, 2000);
+        })
+        .catch(err => {
+          alert('复制失败，请手动复制链接：' + targetUrl);
+          console.error('复制失败:', err);
+        });
+    });
+  </script>
+</body>
+</html>
