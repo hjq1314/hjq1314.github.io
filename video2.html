@@ -1,8 +1,10 @@
-// Java 代码
-String url = "https://hjq1314.github.io/videoanalysis.html"; // 要跳转的网址
-Intent intent = new Intent(Intent.ACTION_VIEW);
-intent.setData(Uri.parse(url));
-// 设置类别为浏览器
-intent.addCategory(Intent.CATEGORY_BROWSABLE);
-startActivity(intent);
+<!-- 按钮样式，点击立即跳转 -->
+<button onclick="window.open('https://hjq1314.github.io/videoanalysis.html', '_blank')">
+  点击跳转到浏览器
+</button>
+
+<!-- 延迟1秒跳转（可选） -->
+<button onclick="setTimeout(() => window.open('https://www.example.com', '_blank'), 1000)">
+  点击后1秒跳转到浏览器
+</button>
 
