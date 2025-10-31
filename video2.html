@@ -1,15 +1,8 @@
-<!-- 渐变发光风格 -->
-<a href="https://hjq1314.github.io/videoanalysis.html" target="_blank" style="
-  display: inline-block; /* 让链接支持宽高设置 */
-  padding: 18px 40px; /* 内边距：上下18px，左右40px（控制按钮大小） */
-  font-size: 20px; /* 文字大小 */
-  font-weight: bold; /* 文字加粗 */
-  color: white; /* 文字颜色 */
-  background: linear-gradient(45deg, #4361ee, #3a0ca3); /* 蓝紫渐变背景 */
-  border-radius: 50px; /* 圆角（值越大越圆） */
-  text-decoration: none; /* 取消默认下划线 */
-  box-shadow: 0 0 20px rgba(67, 97, 238, 0.5); /* 蓝色发光阴影 */
-  transition: all 0.3s; /*  hover动画过渡 */
-">
-  开始解析
-</a>
+// Java 代码
+String url = "https://hjq1314.github.io/videoanalysis.html"; // 要跳转的网址
+Intent intent = new Intent(Intent.ACTION_VIEW);
+intent.setData(Uri.parse(url));
+// 设置类别为浏览器
+intent.addCategory(Intent.CATEGORY_BROWSABLE);
+startActivity(intent);
+
