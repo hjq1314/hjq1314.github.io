@@ -1,0 +1,463 @@
+/* ==============================================
+   1. 基础全局样式（统一两个页面的基础布局）
+   ============================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Microsoft YaHei", "Heiti SC", Arial, sans-serif;
+}
+
+body {
+    background-color: #f5f7fa;
+    padding: 20px;
+    min-height: 100vh;
+    color: #2c3e50;
+}
+
+/* 通用容器：控制页面最大宽度，居中显示 */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* 页面标题样式（如“图片管理后台”“图片查看工具”） */
+.page-title {
+    text-align: center;
+    color: #2c3e50;
+    margin: 30px 0;
+    font-weight: 600;
+    letter-spacing: 1px;
+    font-size: 24px;
+}
+
+/* 卡片容器：统一两个页面的内容区域样式（登录、上传、输入区域） */
+.card {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    padding: 25px;
+    margin-bottom: 30px;
+    transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* 区域标题样式（如“管理员登录”“图片上传”“输入图片链接”） */
+.section-title {
+    color: #34495e;
+    font-size: 18px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ecf0f1;
+    font-weight: 500;
+}
+
+/* 隐藏元素通用类（登录/未登录状态切换、弹窗默认隐藏等） */
+.hidden {
+    display: none !important;
+}
+
+
+/* ==============================================
+   2. 表单与输入框样式（登录表单、链接输入框通用）
+   ============================================== */
+/* 表单组：控制输入框与标签的间距 */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #7f8c8d;
+    font-size: 14px;
+}
+
+/* 通用输入框样式（账号、密码、验证码、图片链接输入框） */
+.form-input, .link-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #bdc3c7;
+    border-radius: 6px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    color: #2c3e50;
+}
+
+.form-input:focus, .link-input:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.form-input::placeholder, .link-input::placeholder {
+    color: #bdc3c7;
+    font-weight: normal;
+}
+
+/* 验证码区域布局（仅管理员页面使用，但样式统一在此） */
+.verify-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.verify-input {
+    flex: 1;
+}
+
+.verify-code-img {
+    width: 120px;
+    height: 45px;
+    background-color: #ecf0f1;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    letter-spacing: 5px;
+    color: #2c3e50;
+    cursor: pointer;
+    user-select: none; /* 禁止选中验证码文字 */
+}
+
+
+/* ==============================================
+   3. 按钮样式（统一所有按钮的交互与视觉）
+   ============================================== */
+/* 按钮基础样式 */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    gap: 8px; /* 图标与文字间距 */
+}
+
+.btn i {
+    font-size: 14px;
+}
+
+/* 按功能区分按钮颜色（保持视觉一致性） */
+/* 主要操作按钮（登录、查看图片） */
+.btn-primary {
+    background-color: #3498db;
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+}
+
+/* 成功操作按钮（上传、重新加载） */
+.btn-success {
+    background-color: #2ecc71;
+    color: #ffffff;
+}
+
+.btn-success:hover {
+    background-color: #27ae60;
+}
+
+/* 危险操作按钮（删除、退出登录） */
+.btn-danger {
+    background-color: #e74c3c;
+    color: #ffffff;
+}
+
+.btn-danger:hover {
+    background-color: #c0392b;
+}
+
+/* 次要操作按钮（清空、刷新验证码） */
+.btn-secondary {
+    background-color: #95a5a6;
+    color: #ffffff;
+}
+
+.btn-secondary:hover {
+    background-color: #7f8c8d;
+}
+
+/* 特殊按钮（确认上传） */
+.btn-special {
+    background-color: #9b59b6;
+    color: #ffffff;
+}
+
+.btn-special:hover {
+    background-color: #8e44ad;
+}
+
+/* 全屏按钮（如登录按钮、清空按钮在小屏幕） */
+.btn-block {
+    width: 100%;
+}
+
+
+/* ==============================================
+   4. 功能模块样式（图片预览、列表、弹窗等）
+   ============================================== */
+/* 提示文本样式（登录错误、上传提示、链接无效等） */
+.tip-text {
+    margin-top: 10px;
+    font-size: 14px;
+    text-align: center;
+    min-height: 20px;
+}
+
+.tip-error {
+    color: #e74c3c; /* 错误提示红色 */
+}
+
+.tip-success {
+    color: #2ecc71; /* 成功提示绿色 */
+}
+
+/* 图片预览区域（仅管理员页面） */
+.image-preview {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px dashed #bdc3c7;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.preview-img {
+    max-width: 100%;
+    max-height: 300px;
+    margin: 15px 0;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* 图片列表样式（仅管理员页面） */
+.image-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.image-table th, .image-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+.image-table th {
+    background-color: #f8f9fa;
+    color: #34495e;
+    font-weight: 600;
+}
+
+.image-table tr:hover {
+    background-color: #f9f9fa;
+}
+
+/* 空列表提示（仅管理员页面） */
+.list-empty {
+    text-align: center;
+    padding: 40px;
+    color: #7f8c8d;
+    background-color: #f9f9f9;
+    border-radius: 6px;
+}
+
+/* 图片弹窗样式（仅用户页面） */
+.modal-mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.modal-mask.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-container {
+    background-color: #ffffff;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 900px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.modal-header {
+    padding: 15px 20px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #ecf0f1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-title {
+    color: #34495e;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #7f8c8d;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    padding: 5px;
+}
+
+.close-btn:hover {
+    color: #e74c3c;
+}
+
+.modal-body {
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: auto;
+}
+
+.modal-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* 保持图片比例，不拉伸 */
+    border-radius: 4px;
+}
+
+/* 弹窗加载状态动画 */
+.modal-loading {
+    color: #3498db;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.modal-loading i {
+    animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.modal-footer {
+    padding: 15px 20px;
+    background-color: #f8f9fa;
+    border-top: 1px solid #ecf0f1;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* 链接输入区域布局（仅用户页面） */
+.input-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+
+/* ==============================================
+   5. 响应式适配（适配PC/平板/手机）
+   ============================================== */
+@media (max-width: 768px) {
+    /* 基础样式调整 */
+    .page-title {
+        font-size: 20px;
+        margin: 20px 0;
+    }
+
+    .card {
+        padding: 20px;
+    }
+
+    /* 验证码区域：横向变纵向 */
+    .verify-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .verify-code-img {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    /* 输入组：横向变纵向（用户页面链接输入+按钮） */
+    .input-group {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    /* 按钮：小屏幕全屏显示 */
+    .btn {
+        width: 100%;
+        min-width: auto;
+    }
+
+    /* 图片列表：隐藏序号列 */
+    .image-table th:nth-child(1), .image-table td:nth-child(1) {
+        display: none;
+    }
+
+    /* 弹窗调整 */
+    .modal-header {
+        padding: 12px 15px;
+    }
+
+    .modal-body {
+        padding: 15px;
+    }
+
+    /* 图片预览：调整最大高度 */
+    .preview-img {
+        max-height: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+
+    .section-title {
+        font-size: 16px;
+    }
+
+    .form-input, .link-input {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+}

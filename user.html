@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片查看 - 用户页面</title>
+    <!-- 引入共用样式文件（后续生成，此处先预留） -->
+    <link rel="stylesheet" href="style.css">
+    <!-- 临时引入字体图标（保持与管理员页面风格统一） -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+    </head>
+<body>
+    <!-- 页面标题 -->
+    <h1 class="page-title"><i class="fa fa-picture-o" aria-hidden="true"></i> 图片查看工具</h1>
+
+    <!-- 核心卡片：链接输入区域 -->
+    <div class="card">
+        <h2 class="section-title"><i class="fa fa-link" aria-hidden="true"></i> 输入图片链接</h2>
+        
+        <!-- 链接输入与按钮 -->
+        <div class="input-group">
+            <input type="text" id="image-link" class="link-input" 
+                   placeholder="请输入图片访问链接（示例：https://hjq1314.github.io/image-storage/a3B7z9X2.png）"
+                   autocomplete="off">
+            <button id="view-image-btn" class="btn view-btn"><i class="fa fa-eye" aria-hidden="true"></i> 查看图片</button>
+            <button id="clear-input-btn" class="btn clear-btn"><i class="fa fa-times" aria-hidden="true"></i> 清空</button>
+        </div>
+        
+        <!-- 提示信息（空输入/无效链接/加载失败） -->
+        <p id="input-tip" class="tip-text"></p>
+    </div>
+
+    <!-- 图片弹窗（默认隐藏，查看图片时显示） -->
+    <div id="image-modal" class="modal-mask">
+        <div class="modal-container">
+            <div class="modal-header">
+                <div class="modal-title">图片预览</div>
+                <button id="modal-close-btn" class="close-btn"><i class="fa fa-times" aria-hidden="true"></i></button>
+            </div>
+            <div class="modal-body">
+                <!-- 加载中状态 -->
+                <div id="modal-loading" class="modal-loading"><i class="fa fa-spinner" aria-hidden="true"></i> 图片加载中...</div>
+                <!-- 图片容器（加载成功后显示） -->
+                <img id="modal-image" class="modal-image" src="" alt="图片预览" style="display: none;">
+                <!-- 加载失败提示（加载失败后显示） -->
+                <div id="modal-error" class="tip-text tip-error" style="display: none;">图片加载失败，请点击“重新加载”或检查链接是否有效</div>
+            </div>
+            <div class="modal-footer">
+                <button id="modal-reload-btn" class="btn reload-btn"><i class="fa fa-refresh" aria-hidden="true"></i> 重新加载</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入共用交互逻辑文件（后续生成，此处先预留） -->
+    <script src="script.js"></script>
+   </body>
+</html>
