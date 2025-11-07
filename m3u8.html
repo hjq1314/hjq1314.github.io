@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>参数显示+M3U8播放器（增强版）</title>
+    <!-- 引入核心依赖 -->
+    <link href="https://vjs.zencdn.net/8.6.1/video-js.css" rel="stylesheet">
+    <script src="https://vjs.zencdn.net/8.6.1/video.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-hls@5.15.0/dist/videojs-contrib-hls.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: "Microsoft YaHei", Arial, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; background-color: #f5f7fa; }
+        .header { text-align: center; margin-bottom: 30px; padding: 20px; background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .header h1 { color: #2d3748; font-size: 28px; margin-bottom: 8px; }
+        .header p { color: #718096; font-size: 16px; }
+        .content { font-size: 18px; color: #333; padding: 20px; background: #fff; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); line-height: 1.6; }
+        .empty { color: #999; }
+        /* 视频容器样式 */
+        .video-container { background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        #videoPlayer { width: 100%; height: auto; max-height: 650px; border-radius: 8px; }
+        /* 自动播放开关样式 */
+        .control-bar { display: flex; align-items: center; margin-bottom: 15px; gap: 15px; }
+        .switch { position: relative; display: inline-block; width: 50px; height: 24px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 24px; }
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: #2196F3; }
+        input:checked + .slider:before { transform: translateX(26px); }
+        .switch-label { color: #4a5568; font-size: 16px; }
+        /* 画质选择下拉框 */
+        .quality-select { padding: 6px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 16px; color: #4a5568; background: #fff; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>参数内容 + M3U8视频播放</h1>
+        <p>支持URL传参显示内容、切换画质、控制自动播放 | 格式：?key=显示内容&video=m3u8链接</p>
+    </div>
+
+    <!-- 参数内容显示区域 -->
+    <div class="content" id="displayContent"></div>
+
+    <!-- 视频控制区（自动播放开关+画质选择） -->
+    <div class="video-container">
+        <div class="control-bar">
+            <label class="switch-label">自动播放：</label>
+            <label class="switch">
+                <input type="checkbox" id="autoPlaySwitch">
+                <span class="slider"></span>
+            </label>
+            
+            <label class="switch-label" style="margin-left: 20px;">画质选择：</label>
+            <select class="quality-select" id="qualitySelect" disabled>
+                <option value="">加载中...</option>
+            </select>
+        </div>
+
+        <!-- M3U8视频播放器 -->
+        <video
+            id="videoPlayer"
+            class="video-js vjs-big-play-centered vjs-theme-fantasy"
+            controls
+            preload="metadata"
+            poster="https://picsum.photos/1200/675" <!-- 默认封面图（随机高清图） -->
+        >
+            <source id="videoSource" type="application/x-mpegURL">
+            您的浏览器不支持HLS流媒体播放，请更换Chrome、Edge、Safari等现代浏览器。
+        </video>
+    </div>
+
+    <script>
+        // 1. 解析URL参数（key=显示内容，video=m3u8链接）
+        function getUrlParam(name) {
+            const reg = new RegExp(`(^|&)${name}=([^&]*)(&|$)`);
+            const r = window.location.search.substr(1).match(reg) || window.location.href.split(`${name}=`);
+            return r ? decodeURIComponent(r[2] || r[1].split('&')[0]) : '';
+        }
+
+        // 2. 显示自定义内容
+        const keyContent = getUrlParam('key') || '暂无自定义显示内容';
+        document.getElementById('displayContent').textContent = keyContent;
+
+        // 3. 播放器核心逻辑
+        document.addEventListener('DOMContentLoaded', function() {
+            const videoUrl = getUrlParam('video');
+            const autoPlaySwitch = document.getElementById('autoPlaySwitch');
+            const qualitySelect = document.getElementById('qualitySelect');
+            let player = null;
+            let qualityOptions = []; // 存储画质选项
+
+            // 初始化播放器
+            function initPlayer() {
+                player = videojs('videoPlayer', {
+                    autoplay: autoPlaySwitch.checked,
+                    controls: true,
+                    responsive: true,
+                    fluid: true,
+                    playbackRates: [0.5, 1.0, 1.5, 2.0] // 倍速播放
+                });
+
+                // 监听自动播放开关变化
+                autoPlaySwitch.addEventListener('change', function() {
+                    if (player) {
+                        player.autoplay(this.checked);
+                        if (this.checked && player.paused()) {
+                            player.play().catch(err => console.log('自动播放被浏览器限制', err));
+                        }
+                    }
+                });
+
+                // 加载视频链接
+                if (videoUrl) {
+                    player.src(videoUrl);
+                    player.load();
+                    // 解析画质（m3u8文件中的分辨率信息）
+                    parseVideoQuality(videoUrl);
+                } else {
+                    qualitySelect.innerHTML = '<option value="">无视频链接</option>';
+                    player.poster('https://picsum.photos/1200/675?blur=2'); // 无视频时模糊封面
+                }
+            }
+
+            // 4. 解析m3u8画质（提取分辨率）
+            function parseVideoQuality(m3u8Url) {
+                fetch(m3u8Url)
+                    .then(response => response.text())
+                    .then(text => {
+                        // 从m3u8文件中匹配分辨率（如 1920x1080、1280x720）
+                        const qualityRegex = /RESOLUTION=(\d+x\d+)/g;
+                        const matches = [...text.matchAll(qualityRegex)];
+                        qualityOptions = matches.map(match => match[1]).filter((v, i, a) => a.indexOf(v) === i);
+
+                        // 填充画质下拉框
+                        if (qualityOptions.length > 0) {
+                            qualitySelect.innerHTML = qualityOptions.map(quality => 
+                                `<option value="${quality}">${quality} (自动适配)</option>`
+                            ).join('');
+                            qualitySelect.disabled = false;
+                        } else {
+                            qualitySelect.innerHTML = '<option value="">默认画质</option>';
+                            qualitySelect.disabled = false;
+                        }
+                    })
+                    .catch(err => {
+                        console.log('解析画质失败', err);
+                        qualitySelect.innerHTML = '<option value="">无法获取画质</option>';
+                        qualitySelect.disabled = false;
+                    });
+            }
+
+            // 5. 画质切换逻辑
+            qualitySelect.addEventListener('change', function() {
+                if (player && this.value && videoUrl) {
+                    // 实际项目中需根据m3u8的画质分片URL切换，此处简化为刷新播放（真实场景需解析分片）
+                    player.src(videoUrl);
+                    player.load();
+                    if (autoPlaySwitch.checked) player.play();
+                }
+            });
+
+            // 初始化播放器
+            initPlayer();
+        });
+    </script>
+</body>
+</html>
