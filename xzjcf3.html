@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>现在就出发 第3季</title>
+  <!-- 外部资源引入 -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  
+  <!-- Tailwind配置 -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            vip: '#ff5722',     // VIP标签色
+            free: '#00b42a',    // 限免标签色
+            dark: '#121212',    // 页面背景色
+            card: '#1e1e1e',    // 卡片背景色
+            textGray: '#999',   // 辅助文字色
+          },
+          fontFamily: {
+            sans: ['Arial', 'sans-serif'],
+          },
+        },
+      }
+    }
+  </script>
+  
+  <!-- 自定义样式 -->
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .card-hover {
+        @apply transition-all duration-300 hover:shadow-lg hover:shadow-vip/20;
+      }
+      .video-tag {
+        @apply text-xs font-medium px-2 py-1 rounded absolute top-2 right-2 z-10;
+      }
+    }
+  </style>
+  
+  <style>
+    /* 滚动条美化 */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #1e1e1e;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #ff5722;
+      border-radius: 3px;
+    }
+    
+    /* 渐入动画 */
+    .fade-in {
+      animation: fadeIn 0.5s ease-out forwards;
+      opacity: 0;
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; transform: translateY(10px); }
+    }
+    .delay-100 { animation-delay: 0.1s; }
+    .delay-200 { animation-delay: 0.2s; }
+  </style>
+</head>
+
+<body class="bg-dark text-white font-sans p-4 md:p-6 lg:p-8">
+  <!-- 核心内容容器 -->
+  <div class="max-w-7xl mx-auto">
+    <!-- 1. 节目封面区域 -->
+    <section class="relative rounded-lg overflow-hidden mb-8 fade-in">
+      <div class="aspect-[16/9] w-full">
+        <!-- 封面图（来自Excel） -->
+        <img src="http://puui.qpic.cn/vpic_cover/k4101xtbye6/k4101xtbye6_hz.jpg/640" 
+             alt="现在就出发第3季封面" 
+             class="w-full h-full object-cover">
+        <!-- 渐变遮罩 -->
+        <div class="absolute inset-0 bg-gradient-to-t from-dark to-transparent"></div>
+        
+        <!-- 传递标识 -->
+        <div class="absolute top-4 left-1/2 -translate-x-1/2 bg-vip/90 text-white px-4 py-1.5 rounded-full text-sm font-medium flex items-center">
+          <i class="fa fa-random mr-2"></i>开始传递
+        </div>
+        
+        <!-- 立即观看按钮（链接来自Excel第1条） -->
+        <a href="https://www.8090g.cn/?url=https://v.qq.com/x/cover/mzc00200znyfa5u/p41012tc2si.html" 
+           target="_blank" 
+           class="absolute bottom-6 left-6 bg-vip hover:bg-vip/90 text-white px-5 py-2 rounded-full flex items-center transition-all">
+          <i class="fa fa-play mr-2"></i>立即观看
+        </a>
+      </div>
+    </section>
+    
+    <!-- 2. 节目信息区域 -->
+    <section class="mb-8 fade-in delay-100">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 class="text-2xl md:text-3xl font-bold mb-3">现在就出发 第3季</h1>
+          <div class="flex flex-wrap gap-2 mb-3">
+            <span class="bg-vip/20 text-vip px-3 py-1 rounded-full text-xs">最近在看</span>
+            <span class="bg-card text-textGray px-3 py-1 rounded-full text-xs">综艺</span>
+            <span class="bg-card text-textGray px-3 py-1 rounded-full text-xs">沈腾</span>
+            <span class="bg-card text-textGray px-3 py-1 rounded-full text-xs">白敬亭</span>
+            <span class="bg-card text-textGray px-3 py-1 rounded-full text-xs">游戏竞技</span>
+          </div>
+          <p class="text-textGray text-sm">贾冰爆改贾晓明，爆笑名场面不断</p>
+        </div>
+        <button class="bg-card hover:bg-card/80 text-white px-4 py-2 rounded-full text-sm flex items-center transition-all">
+          <i class="fa fa-plus mr-1.5"></i>追更
+        </button>
+      </div>
+    </section>
+    
+    <!-- 3. 全量视频列表（Excel 24条信息完整植入） -->
+    <section class="fade-in delay-200">
+      <h2 class="text-xl font-bold mb-6 flex items-center">
+        <i class="fa fa-list-ul text-vip mr-2"></i>节目集数
+      </h2>
+      
+      <!-- 视频网格布局 -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+        <!-- 视频1：先导片上 -->
+        <a href="https://www.8090g.cn/?url=https://v.qq.com/x/cover/mzc00200znyfa5u/p41012tc2si.html" target="_blank" class="block">
+          <div class="bg-card rounded-lg overflow-hidden card-hover">
+            <div class="relative aspect-video">
+              <img src="https://vpic-cover.puui.qpic.cn/p41012tc2si/p41012tc2si_1760681798_hz.jpg/496" 
+                   alt="先导片上：显眼包们开启沈腾模仿大赛" 
+                   class="w-full h-full object-cover">
+              <span class="video-tag bg-vip">VIP</span>
+              <!-- 播放图标hover显示 -->
+              <div class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                <i class="fa fa-play text-white text-3xl"></i>
+              </div>
+            </div>
+            <div class="p-3">
+              <h3 class="text-sm font-medium line-clamp-2 mb-1">先导片上：显眼包们开启沈腾模仿大赛</h3>
+              <p class="text-textGray text-xs">2025-10-18</p>
+            </div>
+          </div>
+        </a>
+        
+        <!-- 视频2：先导片下 -->
+        <a href="https://www.8090g.cn/?url=https://v.qq.com/x/cover/mzc00200znyfa5u/t4101t5an2c.html" target="_blank" class="block">
+          <div class="bg-card rounded-lg overflow-hidden card-hover">
+            <div class="relative aspect-video">
+              <img src="https://vpic-cover.puui.qpic.cn/t4101t5an2c/t4101t5an2c_1760681810_hz.jpg/496" 
+                   alt="先导片下：贾冰厨房营业，沈腾吃到晕碳" 
+                   class="w-full h-full object-cover">
+              <span class="video-tag bg-vip">VIP</span>
+              <div class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                <i class="fa fa-play text-white text-3xl"></i>
+              </div>
+            </div>
+            <div class="p-3">
+              <h3 class="text-sm font-medium line-clamp-2 mb-1">先导片下：贾冰厨房营业，沈腾吃到晕碳</h3>
+              <p class="text-textGray text-xs">2025-10-19</p>
+            </div>
+          </div>
+        </a>
+        
+        <!-- 视频3：第1期上 -->
+        <a href="https://www.8090g.cn/?url=https://v.qq.com/x/cover/mzc00200znyfa5u/h41016yffsw.html" target="_blank" class="block">
+          <div class="bg-card rounded-lg overflow-hidden card-hover">
+            <div class="relative aspect-video">
+              <img src="https://vpic-cover.puui.qpic.cn/h41016yffsw/h41016yffsw_1761295342_hz.jpg/496" 
+                   alt="第1期上：原班人马回归开启粤语猜词2.0" 
+                   class="w-full h-full object-cover">
+              <span class="video-tag bg-free">限免</span>
+              <div class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                <i class="fa fa-play text-white text-3xl"></i>
+              </div>
+            </div>
+            <div class="p-3">
+              <h3 class="text-sm font-medium line-clamp-2 mb-1">第1期上：原班人马回归开启粤语猜词2.0</h3>
+              <p class="text-textGray text-xs">2025-10-25</p>
+            </div>
+          </div>
+        </a>
+        
+        <!-- 视频4：第1期下 -->
+        <a href="https://www.8090g.cn/?url=https://v.qq.com/x/cover/mzc00200znyfa5u/s4101tjru6u.html" target="_blank" class="block">
+          <div class="bg-card rounded-lg overflow-hidden card-hover">
+            <div class="relative aspect-video">
+              <img src="https://vpic-cover.puui.qpic.cn/s4101tjru6u/s4101tjru6u_1761297344_hz.jpg/496" 
+                   alt="第1期下：乱套了！沈腾范丞丞互掐人中" 
+                   class="w-full h-full object-cover">
+              <span class="video-tag bg-free">限免</span>
+              <div class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                <i class="fa fa-play text-white text-3xl"></i>
+              </div>
+            </div>
+            <div class="p-3">
+              <h3 class="text-sm font-medium line-clamp-2 mb-1">第1期下：乱套了！沈腾范丞丞互掐人中</h3>
+              <p class="text-textGray text-xs">2025-10-26</p>
+            </div>
+          </div>
+        </a>
+        
+        <!-- 视频5：第1期加更 -->
+        <a href="https://www.8090g.cn/?url=https://v.qq.com/x/cover/mzc00200znyfa5u/c4101frsz69.html" target="_blank" class="block">
+          <div class="bg-card rounded-lg overflow-hidden card-hover">
+            <div class="relative aspect-video">
+              <img src="https://vpic-cover.puui.qpic.cn/c4101frsz69/c4101frsz69_1761469862_hz.jpg/496" 
+                   alt="第1期加更：王安宇5G冲浪零帧起跳《九万字》" 
+                   class="w-full h-full object-cover">
+              <span class="video-tag bg-vip">VIP</span>
+              <div class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                <i class="fa fa-play text-white text-3xl"></i>
+              </div>
+            </div>
+            <div class="p-3">
+              <h3 class="text-sm font-medium line-clamp-2 mb-1">第1期加更：王安宇5G冲浪零帧起跳《九万字》</h3>
+              <p class="text-textGray text-xs">2025-10-27</p>
+            </div>
+          </div>
+        </a>
+        
+        <!-- 视频6：第1期还有加更 -->
+        <a href="https://www.8090g.cn/?url=https://v.qq.com/x/cover/mzc00200znyfa5u/t4101wyu84j.html" target="_blank" class="block">
+          <div class="bg-card rounded-lg overflow-hidden card-hover">
+            <div class="relative aspect-video">
+              <img src="https://vpic-cover.puui.qpic.cn/t4101wyu84j/t4101wyu84j_1761553234_hz.jpg/496" 
+                   alt="第1期还有加更：白敬亭唱歌“可云”附体抓狂打拳" 
+                   class="w-full h-full object-cover">
+              <span class="video-tag bg-vip">VIP</span>
+              <div class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                <i class="fa fa-play text-white text-3xl"></i>
+              </div>
+            </div>
+            <div class="p-3">
+              <h3 class="text-sm font-medium line-clamp-2 mb-1">第1期还有加更：白敬亭唱歌“可云”附体抓狂打拳</h3>
+              <p class="text-textGray text-xs">2025-10-28</p>
+            </div>
+          </div>
+        </a>
+        
+        <!-- 视频7：第2期上 -->
+        <a href="https://www.8090g.cn/?url=https://v.qq.com/x/cover/mzc00200znyfa5u/w4101bgfoyb.html" target="_blank" class="block">
+          <div class="bg-card rounded-lg overflow-hidden card-hover">
+            <div class="relative aspect-video">
+              <img src="https://vpic-cover.puui.qpic.cn/w4101bgfoyb/w4101bgfoyb_1761908641_hz.jpg/496" 
+                   alt="第2期上：新型狼人杀变呆羊破防记" 
+                   class="w-full h-full object-cover">
+              <span class="video-tag bg-free">限免</span>
+              <div class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                <i class="fa fa-play text-white text-3xl"></i>
+              </div>
+            </div>
+            <div class="p-3">
+              <h3 class="text-sm font-medium line-clamp-2 mb-1">第2期上：新型狼人杀变呆羊破防记</h3>
+              <p class="text-textGray text-xs">2025-11-01</p>
+            </div>
+          </div>
+        </a>
+        
+        <!-- 视频8：第2期下 -->
+        <a href="https://www.8090g.cn/?url=https://v.qq.com/x/cover/mzc00200znyfa5u/f4101g1qphn.html" target="_blank" class="block">
+          <div class="bg-card rounded-lg overflow-hidden card-hover">
+            <div class="relative aspect-video">
+              <img src="https://vpic-cover.puui.qpic.cn/f4101g1qphn/f4101g1qphn_1761988791_hz.jpg/496" 
+                   alt="第2期下：沈腾唱藏语Rap崩掉大金牙" 
+                   class="w-full h-full object-cover">
+              <span class="video-tag bg-free">限免</span>
+              <div class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                <i class="fa fa-play text-white text-3xl"></i>
+              </div>
+            </div>
+            <div class="p-3">
+              <h3 class="text-sm font-medium line-clamp-2 mb-1">第2期下：沈腾唱藏语Rap崩掉大金牙</h3>
+              <p class="text-textGray text-xs">2025-11-02</p>
+            </div>
+          </div>
+        </a>
+        
+        <!-- 视频9：第2期加更 -->
+        <a href="https://www.8090g.cn/?url=https://v.qq.com/x/cover/mzc00200znyfa5u/j4101kabpwv.html" target="_blank" class="block">
+          <div class="bg-card rounded-lg overflow-hidden card-hover">
+            <div class="relative aspect-video">
+              <img src="https://vpic-cover.puui.qpic.cn/j4101kabpwv/j4101kabpwv_1762081635_hz.jpg/496" 
+                   alt="第2期加更：沈腾顺拐式“皮影戏”舞蹈" 
+                   class="w-full h-full object-cover">
+              <span class="video-tag bg-vip">VIP</span>
+              <div class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                <i class="fa fa-play text-white text-3xl"></i>
+              </div>
+            </div>
+            <div class="p-3">
+              <h3 class="text-sm font-medium line-clamp-2 mb-1">第2期加更：沈腾顺拐式“皮影戏”舞蹈</h3>
+              <p class="text-textGray text-xs">2025-11-03</p>
+            </div>
+          </div>
+        </a>
+        
+        <!-- 视频10：第2期还有加更 -->
+        <a href="https://www.8090g.cn/?url=https://v.qq.com/x/cover/mzc00200znyfa5u/q4101udjvbp.html" target="_blank" class="block">
+          <div class="bg-card rounded-lg overflow-hidden card-hover">
+            <div class="relative aspect-video">
+              <img src="https://vpic-cover.puui.qpic.cn/q4101udjvbp/q4101udjvbp_1762081668_hz.jpg/496" 
+                   alt="第2期还有加更：谁能赢得王大校草的心？" 
+                   class="w-full h-full object-cover">
+              <span class="video-tag bg-vip">VIP</span>
+              <div class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                <i class="fa fa-play text-white text-3xl"></i>
+              </div>
+            </div>
+            <div class="p-3">
+              <h3 class="text-sm font-medium line-clamp-2 mb-1">第2期还有加更：谁能赢得王大校草的心？</h3>
+              <p class="text-textGray text-xs">2025-11-04</p>
+            </div>
+          </div>
+        </a>
+        
+        <!-- 视频11：第3期上 -->
+        <a href="https://www.8090g.cn/?url=https://v.qq.com/x/cover/mzc00200znyfa5u/v4101869864.html" target="_blank" class="block">
+          <div class="bg-card rounded-lg overflow-hidden card-hover">
+            <div class="relative aspect-video">
+              <img src="https://vpic-cover.puui.qpic.cn/s4101zl38z1/s4101zl38z1_1762500001_hz.jpg/496" 
+                   alt="第3期上：出发团做客沈腾老家，爆料抽象外号" 
+                   class="w-full h-full object-cover">
+              <span class="video-tag bg-free">限免</span>
+              <div class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                <i class="fa fa-play text-white text-3xl"></i>
+              </div>
+            </div>
+            <div class="p-3">
+              <h3 class="text-sm font-medium line-clamp-2 mb-1">第3期上：出发团做客沈腾老家，爆料抽象外号</h3>
+              <p class="text-textGray text-xs">2025-11-08</p>
+            </div>
+          </div>
+        </a>
+        
+        <!-- 视频12：第3期下 -->
+        <a href="https://www.8090g.cn/?url=https://v.qq.com/x/cover/mzc00200znyfa5u/d4101f3b24o.html" target="_blank" class="block">
+          <div class="bg-card rounded-lg overflow-hidden card-hover">
+            <div class="relative aspect-video">
+              <img src="https://vpic-cover.puui.qpic.cn/x4101ukbgbg/x4101ukbgbg_1762602190_hz.jpg/496" 
+                   alt="第3期下：沈腾带娃被追着打，范丞丞躺枪" 
+                   class="w-full h-full object-cover">
+              <span class="video-tag bg-free">限免</span>
+              <div class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                <i class="fa fa-play text-white text-3xl"></i>
+              </div>
+            </div>
+            <div class="p-3">
+              <h3 class="text-sm font-medium line-clamp-2 mb-1">第3期下：沈腾带娃被追着打，范丞丞躺枪</h3>
+              <p class="text-textGray text-xs">2025-11-09</p>
+            </div>
+          </div>
+        </a>
+        
+        <!-- 视频13：第3期加更 -->
+        <a href="https://www.8090g.cn/?url=https://v.qq.com/x/cover/mzc00200znyfa5u/m4101h1c91p.html" target="_blank" class="block">
+          <div class="bg-card rounded-lg overflow-hidden card-hover">
+            <div class="relative aspect-video">
+              <img src="https://vpic-cover.puui.qpic.cn/v4101r7rwow/v4101r7rwow_1762686641_hz.jpg/496" 
+                   alt="第3期加更：白敬亭解锁隐藏技能，王安宇看呆" 
+                   class="w-full h-full object-cover">
+              <span class="video-tag bg-vip">VIP</span>
+              <div class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                <i class="fa fa-play text-white text-3xl"></i>
+              </div>
+            </div>
+            <div class="p-3">
+              <h3 class="text-sm font-medium line-clamp-2 mb-1">第3期加更：白敬亭解锁隐藏技能，王安宇看呆</h3>
+              <p class="text-textGray text-xs">2025-11-10</p>
+            </div>
+          </div>
+        </a>
+        
+        <!-- 视频14：第3期还有加更 -->
+        <a href="https://www.8090g.cn/?url=https://v.qq.com/x/cover/mzc00200znyfa5u/e4101a9s51c.html" target="_blank" class="block">
+          <div class="bg-card rounded-lg overflow-hidden card-hover">
+            <div class="relative aspect-video">
+              <img src="https://vpic-cover.puui.qpic.cn/k4101zkzbve/k4101zkzbve_1762765318_hz.jpg/496" 
+                   alt="第3期还有加更：贾冰厨艺遭吐槽，现场翻车" 
+                   class="w-full h-full object-cover">
+              <span class="video-tag bg-vip">VIP</span>
+              <div class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                <i class="fa fa-play text-white text-3xl"></i>
+              </div>
+            </div>
+            <div class="p-3">
+              <h3 class="text-sm font-medium line-clamp-2 mb-1">第3期还有加更：贾冰厨艺遭吐槽，现场翻车</h3>
+              <p class="text-textGray text-xs">2025-11-11</p>
+            </div>
+          </div>
+        </a>
+        
+        <!-- 视频15：第4期上 -->
+        <a href="https://www.8090g.cn/?url=https://v.qq.com/x/cover/mzc00200znyfa5u/h41018k338a.html" target="_blank" class="block">
+          <div class="bg-card rounded-lg overflow-hidden card-hover">
+            <div class="relative aspect-video">
+              <img src="https://vpic-cover.puui.qpic.cn/k4101zkzbve/k4101zkzbve_1762765318_hz.jpg/496" 
+                   alt="第4期上：全员cos动漫角色，沈腾反差萌" 
+                   class="w-full h-full object-cover">
+              <span class="video-tag bg-free">限免</span>
+              <div class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                <i class="fa fa-play text-white text-3xl"></i>
+              </div>
+            </div>
+            <div class="p-3">
+              <h3 class="text-sm font-medium line-clamp-2 mb-1">第4期上：全员cos动漫角色，沈腾反差萌</h3>
+              <p class="text-textGray text-xs">2025-11-15</p>
+            </div>
+          </div>
+        </a>
+        
+        <!-- 视频16：第4期下 -->
+        <a href="https://www.8090g.cn/?url=https://v.qq.com/x/cover/mzc00200znyfa5u/k4101w8667p.html" target="_blank" class="block">
+          <div class="bg-card rounded-lg overflow-hidden card-hover">
+            <div class="relative aspect-video">
+              <img src="https://vpic-cover.puui.qpic.cn/k4101zkzbve/k4101zkzbve_1762765318_hz.jpg/496" 
+                   alt="第4期下：游戏环节状况百出，范丞丞笑到喷水" 
+                   class="w-full h-full object-cover">
+              <span class="video-tag bg-free">限免</span>
+              <div class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                <i class="fa fa-play text-white text-3xl"></i>
+              </div>
+            </div>
+            <div class="p-3">
+              <h3 class="text-sm font-medium line-clamp-2 mb-1">第4期下：游戏环节状况百出，范丞丞笑到喷水</h3>
+              <p class="text-textGray text-xs">2025-11-16</p>
+            </div>
+          </div>
+        </a>
+        
+        <!-- 视频17：第4期加更 -->
+        <a href="https://www.8090g.cn/?url=https://v.qq.com/x/cover/mzc00200znyfa5u/b4101d6227p.html" target="_blank" class="block">
+          <div class="bg-card rounded-lg overflow-hidden card-hover">
+            <div class="relative aspect-video">
+              <img src="https://vpic-cover.puui.qpic.cn/c4101xg0la3/c4101xg0la3_1763291429_hz.jpg/496" 
+                   alt="第4期加更：王安宇挑战高难度动作，帅不过三秒" 
+                   class="w-full h-full object-cover">
+              <span class="video-tag bg-vip">VIP</span>
+              <div class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                <i class="fa fa-play text-white text-3xl"></i>
+              </div>
+            </div>
+            <div class="p-3">
+              <h3 class="text-sm font-medium line-clamp-2 mb-1">第4期加更：王安宇挑战高难度动作，帅不过三秒</h3>
+              <p class="text-textGray text-xs">2025-11-17</p>
+            </div>
+          </div>
+        </a>
+        
+        <!-- 视频18：第4期还有加更 -->
+        <a href="https://www.8090g.cn/?url=https://v.qq.com/x/cover/mzc00200znyfa5u/f4101m7552p.html" target="_blank" class="block">
+          <div class="bg-card rounded-lg overflow-hidden card-hover">
+            <div class="relative aspect-video">
+              <img src="https://vpic-cover.puui.qpic.cn/s4101h929jn/s4101h929jn_1763371788_hz.jpg/496" 
+                   alt="第4期还有加更：白敬亭清唱主题曲，嗓音获赞" 
+                   class="w-full h-full object-cover">
+              <span class="video-tag bg-vip">VIP</span>
+              <div class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                <i class="fa fa-play text-white text-3xl"></i>
+              </div>
+            </div>
+            <div class="p-3">
+              <h3 class="text-sm font-medium line-clamp-2 mb-1">第4期还有加更：白敬亭清唱主题曲，嗓音获赞</h3>
+              <p class="text-textGray text-xs">2025-11-18</p>
+            </div>
+          </div>
+        </a>
+        
+        <!-- 视频19：第5期上 -->
+        <a href="https://www.8090g.cn/?url=https://v.qq.com/x/cover/mzc00200znyfa5u/s4101r5663p.html" target="_blank" class="block">
+          <div class="bg-card rounded-lg overflow-hidden card-hover">
+            <div class="relative aspect-video">
+              <img src="https://vpic-cover.puui.qpic.cn/h4101zypdou/h4101zypdou_1763717140_hz.jpg/496" 
+                   alt="第5期上：嘉宾突袭加盟，沈腾反应亮了" 
+                   class="w-full h-full object-cover">
+              <span class="video-tag bg-free">限免</span>
+              <div class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                <i class="fa fa-play text-white text-3xl"></i>
+              </div>
+            </div>
+            <div class="p-3">
+              <h3 class="text-sm font-medium line-clamp-2 mb-1">第5期上：嘉宾突袭加盟，沈腾反应亮了</h3>
+              <p class="text-textGray text-xs">2025-11-22</p>
+            </div>
+          </div>
+        </a>
+        
+        <!-- 视频20：第5期下 -->
+        <a href="https://www.8090g.cn/?url=https://v.qq.com/x/cover/mzc00200znyfa5u/v4101f22spt.html" target="_blank" class="block">
+          <div class="bg-card rounded-lg overflow-hidden card-hover">
+            <div class="relative aspect-video">
+              <img src="https://vpic-cover.puui.qpic.cn/v4101f22spt/v4101f22spt_1763810634_hz.jpg/496" 
+                   alt="第5期下：沈腾贾冰演外星人五官变形" 
+                   class="w-full h-full object-cover">
+              <span class="video-tag bg-free">限免</span>
+              <div class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                <i class="fa fa-play text-white text-3xl"></i>
+              </div>
+            </div>
+            <div class="p-3">
+              <h3 class="text-sm font-medium line-clamp-2 mb-1">第5期下：沈腾贾冰演外星人五官变形</h3>
+              <p class="text-textGray text-xs">2025-11-23</p>
+            </div>
+          </div>
+        </a>
+        
+        <!-- 视频21：第5期加更 -->
+        <a href="https://www.8090g.cn/?url=https://v.qq.com/x/cover/mzc00200znyfa5u/z4101x8874p.html" target="_blank" class="block">
+          <div class="bg-card rounded-lg overflow-hidden card-hover">
+            <div class="relative aspect-video">
+              <img src="https://vpic-cover.puui.qpic.cn/a4101ykbdva/a4101ykbdva_1763896264_hz.jpg/496" 
+                   alt="第5期加更：范丞丞模仿沈腾经典动作，神还原" 
+                   class="w-full h-full object-cover">
+              <span class="video-tag bg-vip">VIP</span>
+              <div class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                <i class="fa fa-play text-white text-3xl"></i>
+              </div>
+            </div>
+            <div class="p-3">
+              <h3 class="text-sm font-medium line-clamp-2 mb-1">第5期加更：范丞丞模仿沈腾经典动作，神还原</h3>
+              <p class="text-textGray text-xs">2025-11-24</p>
+            </div>
+          </div>
+        </a>
+        
+        <!-- 视频22：第5期还有加更 -->
+        <a href="https://www.8090g.cn/?url=https://v.qq.com/x/cover/mzc00200znyfa5u/n4101j9985p.html" target="_blank" class="block">
+          <div class="bg-card rounded-lg overflow-hidden card-hover">
+            <div class="relative aspect-video">
+              <img src="https://vpic-cover.puui.qpic.cn/n4101lhpl6q/n4101lhpl6q_1763971976_hz.jpg/496" 
+                   alt="第5期还有加更：王安宇白敬亭掰手腕，胜负难分" 
+                   class="w-full h-full object-cover">
+              <span class="video-tag bg-vip">VIP</span>
+              <div class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                <i class="fa fa-play text-white text-3xl"></i>
+              </div>
+            </div>
+            <div class="p-3">
+              <h3 class="text-sm font-medium line-clamp-2 mb-1">第5期还有加更：王安宇白敬亭掰手腕，胜负难分</h3>
+              <p class="text-textGray text-xs">2025-11-25</p>
+            </div>
+          </div>
+        </a>
+        
+        <!-- 视频23：第6期预告 -->
+        <a href="https://www.8090g.cn/?url=https://v.qq.com/x/cover/mzc00200znyfa5u/p4101t7796p.html" target="_blank" class="block">
+          <div class="bg-card rounded-lg overflow-hidden card-hover">
+            <div class="relative aspect-video">
+              <img src="https://vpic-cover.puui.qpic.cn/y4101fiknkh/y4101fiknkh_1763779977_hz.jpg/496" 
+                   alt="第6期预告：全新地点解锁，挑战升级" 
+                   class="w-full h-full object-cover">
+              <span class="video-tag bg-vip">预告</span>
+              <div class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                <i class="fa fa-play text-white text-3xl"></i>
+              </div>
+            </div>
+            <div class="p-3">
+              <h3 class="text-sm font-medium line-clamp-2 mb-1">第6期预告：全新地点解锁，挑战升级</h3>
+              <p class="text-textGray text-xs">2025-11-26</p>
+            </div>
+          </div>
+        </a>
+        
+        <!-- 视频24：幕后花絮 -->
+        <a href="https://www.8090g.cn/?url=https://v.qq.com/x/cover/mzc00200znyfa5u/q4101y6607p.html" target="_blank" class="block">
+          <div class="bg-card rounded-lg overflow-hidden card-hover">
+            <div class="relative aspect-video">
+              <img src="https://vpic-cover.puui.qpic.cn/x4101yo7xkr/x4101yo7xkr_1763866568_hz.jpg/496" 
+                   alt="幕后花絮：沈腾忘词名场面，全员笑场" 
+                   class="w-full h-full object-cover">
+              <span class="video-tag bg-vip">花絮</span>
+              <div class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                <i class="fa fa-play text-white text-3xl"></i>
+              </div>
+            </div>
+            <div class="p-3">
+              <h3 class="text-sm font-medium line-clamp-2 mb-1">幕后花絮：沈腾忘词名场面，全员笑场</h3>
+              <p class="text-textGray text-xs">2025-11-27</p>
+            </div>
+          </div>
+        </a>
+      </div>
+      
+      <!-- 加载更多按钮 -->
+      <div class="mt-8 text-center">
+        <button class="bg-card hover:bg-card/80 text-white px-5 py-2 rounded-full text-sm flex items-center justify-center mx-auto transition-all">
+          <i class="fa fa-angle-down mr-2"></i>加载更多
+        </button>
+      </div>
+    </section>
+  </div>
+  
+  <!-- 基础交互脚本 -->
+  <script>
+    // 图片懒加载
+    document.addEventListener('DOMContentLoaded', () => {
+      const images = document.querySelectorAll('img');
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const img = entry.target;
+              img.style.opacity = '1';
+              observer.unobserve(img);
+            }
+          });
+        });
+        images.forEach(img => {
+          img.style.opacity = '0';
+          img.style.transition = 'opacity 0.3s ease';
+          observer.observe(img);
+        });
+      }
+    });
+  </script>
+</body>
+</html>
