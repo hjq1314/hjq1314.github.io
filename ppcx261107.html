@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#FFF3E2">
+<title>全国连锁品牌 · 城市查询</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%23FFC96F'/><stop offset='.52' stop-color='%23FF8A54'/><stop offset='1' stop-color='%23F0547A'/></linearGradient></defs><rect width='100' height='100' rx='24' fill='url(%23g)'/><g fill='none' stroke='%23fff' stroke-width='6' stroke-linecap='round'><path d='M32 40h36l-4 38a6 6 0 0 1-6 5h-16a6 6 0 0 1-6-5z'/><path d='M28 40h44'/><path d='M50 40V26'/><path d='M58 38l6-12'/></g></svg>">
+<style>
+  :root{
+    --ink:#3D2314;
+    --ink-soft:#7A5B47;
+    --brand-a:#C2410C;
+    --brand-b:#E11D48;
+    --brand-c:#BE185D;
+    --line:rgba(180,120,80,.18);
+    --card:rgba(255,255,255,.62);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%;width:100%;max-width:100%;overflow-x:hidden}
+  body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    color:var(--ink);
+    background:
+      radial-gradient(1100px 780px at 12% 6%, #FFD9A0 0%, rgba(255,217,160,0) 62%),
+      radial-gradient(980px 720px at 92% 2%, #FFB6A6 0%, rgba(255,182,166,0) 66%),
+      radial-gradient(900px 820px at 46% 108%, #FFE7C2 0%, rgba(255,231,194,0) 64%),
+      linear-gradient(168deg,#FFF9F1 0%,#FFEFDB 46%,#FFE3D5 100%);
+    background-attachment:fixed;
+    min-height:100%;
+    overflow-x:hidden;
+  }
+  /* 极细网格 + 柔光，制造科技感 */
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.55) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.55) 1px, transparent 1px);
+    background-size:64px 64px;
+    opacity:.22;
+    mask-image:radial-gradient(circle at 50% 30%, #000 0%, transparent 78%);
+    -webkit-mask-image:radial-gradient(circle at 50% 30%, #000 0%, transparent 78%);
+  }
+  .wrap{
+    position:relative;z-index:1;
+    max-width:1080px;margin:0 auto;width:100%;
+    padding:calc(env(safe-area-inset-top) + 34px) 20px calc(env(safe-area-inset-bottom) + 40px);
+    overflow-x:clip;
+  }
+
+  /* ---------- 首页 ---------- */
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:13px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ink-soft);font-weight:600;
+    padding:7px 14px;border-radius:999px;
+    background:rgba(255,255,255,.5);border:1px solid var(--line);
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  }
+  .eyebrow i{width:6px;height:6px;border-radius:50%;background:linear-gradient(135deg,#FF8A3D,#E11D48);box-shadow:0 0 10px rgba(225,29,72,.6)}
+  h1{
+    font-size:clamp(26px,6.6vw,46px);
+    line-height:1.2;margin:20px 0 12px;font-weight:800;letter-spacing:-.01em;
+    max-width:100%;overflow-wrap:anywhere;word-break:break-word;
+  }
+  h1 span{
+    background:linear-gradient(100deg,#B93812,#E11D48 58%,#B0185A);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .lede{margin:0 0 34px;color:var(--ink-soft);font-size:clamp(14px,3.6vw,16px);line-height:1.7;
+    max-width:min(44ch,100%);overflow-wrap:break-word}
+
+  .cards{display:grid;grid-template-columns:1fr;gap:18px;min-width:0}
+  @media (min-width:820px){
+    .cards{grid-template-columns:1fr 1fr;gap:24px}
+    .lede{margin-bottom:42px}
+  }
+  .card{
+    position:relative;display:block;text-align:left;width:100%;min-width:0;max-width:100%;
+    padding:26px 26px 24px;
+    border-radius:28px;border:1px solid rgba(255,255,255,.85);
+    background:linear-gradient(150deg,rgba(255,255,255,.78),rgba(255,255,255,.46));
+    backdrop-filter:blur(22px) saturate(1.15);-webkit-backdrop-filter:blur(22px) saturate(1.15);
+    box-shadow:0 14px 34px -18px rgba(170,90,55,.45), inset 0 1px 0 rgba(255,255,255,.9);
+    cursor:pointer;
+    transition:transform .5s cubic-bezier(.22,.61,.36,1), box-shadow .5s cubic-bezier(.22,.61,.36,1);
+    -webkit-appearance:none;appearance:none;font:inherit;color:inherit;
+    overflow:hidden;
+  }
+  .card::after{
+    content:"";position:absolute;inset:0;border-radius:28px;pointer-events:none;
+    background:radial-gradient(120% 90% at 100% 0%, rgba(255,255,255,.6), transparent 55%);
+    opacity:0;transition:opacity .5s ease;
+  }
+  .card:hover{transform:translateY(-7px);box-shadow:0 30px 60px -26px rgba(170,85,50,.52), inset 0 1px 0 rgba(255,255,255,.9)}
+  .card:hover::after{opacity:1}
+  .card:active{transform:translateY(-2px) scale(.985)}
+  .card:focus-visible{outline:2px solid rgba(194,65,12,.55);outline-offset:4px}
+
+  .ico{
+    width:92px;height:92px;border-radius:26px;display:grid;place-items:center;
+    margin-bottom:22px;
+    transition:transform .5s cubic-bezier(.22,.61,.36,1);
+  }
+  .card:hover .ico{transform:scale(1.05) rotate(-2deg)}
+  .ico.milk{background:linear-gradient(145deg,#FFC96F 0%,#FF8A54 48%,#F0547A 100%);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.55), 0 16px 30px -14px rgba(240,84,122,.75)}
+  .ico.snack{background:linear-gradient(145deg,#FFB25E 0%,#F8693C 50%,#D32F2F 100%);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.55), 0 16px 30px -14px rgba(211,47,47,.72)}
+  .ico svg{width:44px;height:44px;stroke:#fff;stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round;
+    filter:drop-shadow(0 2px 4px rgba(120,30,10,.28))}
+
+  .name{
+    font-size:clamp(22px,5.4vw,28px);font-weight:800;letter-spacing:-.01em;
+    background:linear-gradient(100deg,#C2410C,#E11D48 58%,#BE185D);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    margin:0 0 8px;
+  }
+  .sub{margin:0;font-size:14px;color:var(--ink-soft);line-height:1.6}
+  .go{
+    display:inline-flex;align-items:center;gap:6px;margin-top:16px;
+    font-size:13.5px;font-weight:700;color:#B0381C;
+  }
+  .go svg{width:15px;height:15px;stroke:#B0381C;stroke-width:2;fill:none;stroke-linecap:round}
+
+  /* ---------- 详情页 ---------- */
+  .screen{display:none;animation:rise .55s cubic-bezier(.22,.61,.36,1) both}
+  .screen.on{display:block}
+  @keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+
+  .topbar{display:flex;align-items:center;gap:14px;margin-bottom:26px}
+  .back{
+    width:44px;height:44px;flex:0 0 auto;border-radius:50%;border:1px solid rgba(255,255,255,.9);
+    background:rgba(255,255,255,.66);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+    display:grid;place-items:center;cursor:pointer;
+    box-shadow:0 8px 22px -12px rgba(170,90,55,.5);
+    transition:transform .35s cubic-bezier(.22,.61,.36,1), background .35s;
+  }
+  .back:hover{transform:translateX(-3px);background:rgba(255,255,255,.85)}
+  .back svg{width:19px;height:19px;stroke:#8A4526;stroke-width:2.1;fill:none;stroke-linecap:round}
+  .crumb{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);font-weight:700}
+  .ptitle{font-size:clamp(26px,6.4vw,38px);font-weight:800;margin:0 0 6px;letter-spacing:-.01em}
+  .ptitle span{background:linear-gradient(100deg,#B93812,#E11D48 58%,#B0185A);
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .pdesc{margin:0 0 30px;color:var(--ink-soft);font-size:14.5px}
+
+  /* 下拉 */
+  .field-label{font-size:15px;font-weight:700;color:#5E3A25;margin:0 0 10px}
+  .select{position:relative;max-width:520px}
+  .trigger{
+    width:100%;display:flex;align-items:center;justify-content:space-between;gap:14px;
+    padding:17px 20px;border-radius:18px;cursor:pointer;
+    border:1px solid rgba(255,255,255,.9);
+    background:rgba(255,255,255,.72);
+    backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+    box-shadow:0 12px 30px -18px rgba(170,90,55,.5), inset 0 1px 0 #fff;
+    transition:box-shadow .3s, transform .3s, border-color .3s;
+    -webkit-appearance:none;appearance:none;font:inherit;text-align:left;
+  }
+  .trigger:hover{transform:translateY(-1px);box-shadow:0 18px 38px -20px rgba(170,90,55,.55), inset 0 1px 0 #fff}
+  .trigger:focus-visible{outline:2px solid rgba(194,65,12,.5);outline-offset:3px}
+  .trigger .val{font-size:16.5px;font-weight:700;color:var(--ink)}
+  .trigger .val.ph{font-weight:500;color:#A8846E}
+  .trigger .caret{width:20px;height:20px;flex:0 0 auto;stroke:#B06A45;stroke-width:2;fill:none;
+    transition:transform .35s cubic-bezier(.22,.61,.36,1)}
+  .trigger[aria-expanded="true"] .caret{transform:rotate(180deg)}
+
+  .panel{
+    position:absolute;left:0;right:0;top:calc(100% + 10px);z-index:20;
+    background:rgba(255,252,247,.92);
+    backdrop-filter:blur(26px) saturate(1.2);-webkit-backdrop-filter:blur(26px) saturate(1.2);
+    border:1px solid rgba(255,255,255,.95);border-radius:20px;
+    box-shadow:0 34px 70px -30px rgba(150,70,35,.55);
+    overflow:hidden;
+    opacity:0;pointer-events:none;transform:translateY(-8px) scale(.985);
+    transition:opacity .26s ease, transform .26s cubic-bezier(.22,.61,.36,1);
+  }
+  .panel.open{opacity:1;pointer-events:auto;transform:none}
+  .panel .search{
+    display:flex;align-items:center;gap:10px;padding:14px 16px;
+    border-bottom:1px solid rgba(180,120,80,.14);
+  }
+  .panel .search svg{width:17px;height:17px;stroke:#B08A72;stroke-width:1.9;fill:none;flex:0 0 auto}
+  .panel input{
+    flex:1;border:0;background:transparent;font:inherit;font-size:15.5px;color:var(--ink);
+    outline:none;min-width:0;padding:2px 0;
+  }
+  .panel input::placeholder{color:#BF9F89}
+  .list{max-height:min(46vh,320px);overflow-y:auto;overscroll-behavior:contain;padding:8px}
+  .list::-webkit-scrollbar{width:9px}
+  .list::-webkit-scrollbar-thumb{background:rgba(190,130,95,.32);border-radius:9px}
+  .list::-webkit-scrollbar-track{background:transparent}
+  .opt{
+    width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;
+    padding:13px 14px;border:0;border-radius:13px;background:transparent;cursor:pointer;
+    font:inherit;font-size:15.5px;font-weight:600;color:#40261A;text-align:left;
+    transition:background .18s, transform .18s;
+  }
+  .opt:hover,.opt.hl{background:rgba(255,225,200,.62)}
+  .opt:active{transform:scale(.985)}
+  .opt .n{font-size:12.5px;font-weight:600;color:#A97C60;white-space:nowrap}
+  .empty{padding:22px 16px;text-align:center;color:#A8846E;font-size:14px}
+
+  /* 结果 */
+  .result{margin-top:26px;max-width:520px}
+  .loading{
+    display:none;align-items:center;gap:14px;padding:22px;
+    border-radius:20px;border:1px solid rgba(255,255,255,.85);
+    background:rgba(255,255,255,.6);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  }
+  .loading.on{display:flex;animation:rise .4s both}
+  .spin{
+    width:34px;height:34px;flex:0 0 auto;border-radius:50%;
+    border:3px solid rgba(226,86,60,.16);border-top-color:#E2563C;
+    animation:rot .82s linear infinite;
+  }
+  @keyframes rot{to{transform:rotate(360deg)}}
+  .loading p{margin:0;font-size:15px;font-weight:600;color:#8A4B2C}
+  .loading p small{display:block;font-size:12.5px;font-weight:500;color:#B3876E;margin-top:3px}
+
+  .out{display:none}
+  .out.on{display:block;animation:rise .55s cubic-bezier(.22,.61,.36,1) both}
+  .out-card{
+    padding:24px;border-radius:24px;
+    border:1px solid rgba(255,255,255,.9);
+    background:linear-gradient(150deg,rgba(255,255,255,.82),rgba(255,255,255,.52));
+    backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
+    box-shadow:0 20px 46px -26px rgba(170,90,55,.5), inset 0 1px 0 #fff;
+  }
+  .out-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px}
+  .out-name{font-size:clamp(19px,4.8vw,22px);font-weight:800;letter-spacing:-.01em;
+    background:linear-gradient(100deg,#C2410C,#E11D48 60%,#BE185D);
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .count{font-size:12.5px;font-weight:700;color:#A2573A;padding:4px 11px;border-radius:999px;
+    background:rgba(255,225,205,.75);border:1px solid rgba(230,160,120,.4)}
+  .out-hint{font-size:13px;color:#8F6A53;margin:0 0 18px}
+  .chips{display:flex;flex-wrap:wrap;gap:10px}
+  .chip{
+    padding:10px 18px;border-radius:999px;font-size:15px;font-weight:700;color:#7C2D12;
+    background:#fff;border:1px solid rgba(235,170,130,.45);
+    box-shadow:0 6px 16px -10px rgba(180,100,60,.5);
+    opacity:0;transform:translateY(9px) scale(.96);
+    animation:pop .48s cubic-bezier(.22,.61,.36,1) forwards;
+  }
+  @keyframes pop{to{opacity:1;transform:none}}
+  .chip:hover{background:#FFF4EA}
+  .again{
+    margin-top:20px;display:inline-flex;align-items:center;gap:7px;
+    padding:11px 18px;border-radius:999px;cursor:pointer;font:inherit;font-size:14px;font-weight:700;
+    color:#9A4423;background:rgba(255,255,255,.7);border:1px solid rgba(235,175,140,.6);
+    transition:background .25s, transform .25s;
+  }
+  .again:hover{background:#fff;transform:translateY(-1px)}
+  .again svg{width:15px;height:15px;stroke:#9A4423;stroke-width:2;fill:none}
+  .foot{margin-top:44px;font-size:12.5px;color:#A2836F;text-align:center;line-height:1.8}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- 首页 -->
+  <section id="home" class="screen on">
+    <div class="eyebrow"><i></i>全国连锁品牌地图</div>
+    <h1>选择一个类目<br><span>查询它在哪些城市开店</span></h1>
+    <p class="lede">汇集全国主要城市的连锁品牌分布，选择类目后输入品牌，即可查看覆盖城市。</p>
+
+    <div class="cards">
+      <button class="card" data-cat="milk">
+        <div class="ico milk" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M6.2 9.2 7 6.4h10l.8 2.8"/>
+            <path d="M6.2 9.2h11.6l-1.1 10.3a1.9 1.9 0 0 1-1.9 1.7h-5.6a1.9 1.9 0 0 1-1.9-1.7z"/>
+            <path d="M10 6.4V3"/><path d="M14.4 6.4 16.2 2.6"/>
+            <path d="M8.6 13.2h6.8" stroke-dasharray="1.6 1.6"/>
+          </svg>
+        </div>
+        <p class="name">奶茶咖啡</p>
+        <p class="sub">茶饮、咖啡、甜品与烘焙 · 65 个品牌</p>
+        <span class="go">进入查询
+          <svg viewBox="0 0 24 24"><path d="M5 12h13"/><path d="M12.5 5.5 19 12l-6.5 6.5"/></svg>
+        </span>
+      </button>
+
+      <button class="card" data-cat="snack">
+        <div class="ico snack" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M6.4 3.2h11.2l1.4 4.3v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.5z"/>
+            <path d="M6.4 3.2 7.4 7.5h9.2l1-4.3"/>
+            <path d="M15.6 3.6v3.6"/><path d="M12 3.4v4"/><path d="M8.6 3.6v3.6"/>
+            <circle cx="12" cy="13.6" r="2.9" stroke-dasharray="1.4 1.4"/>
+          </svg>
+        </div>
+        <p class="name">零食</p>
+        <p class="sub">量贩零食、卤味与糕点 · 12 个品牌</p>
+        <span class="go">进入查询
+          <svg viewBox="0 0 24 24"><path d="M5 12h13"/><path d="M12.5 5.5 19 12l-6.5 6.5"/></svg>
+        </span>
+      </button>
+    </div>
+    <p class="foot">数据来源：全国省会城市门店搜索整理 · 仅供查询参考</p>
+  </section>
+
+  <!-- 详情页 -->
+  <section id="detail" class="screen">
+    <div class="topbar">
+      <button class="back" id="back" aria-label="返回">
+        <svg viewBox="0 0 24 24"><path d="M15 5 8 12l7 7"/></svg>
+      </button>
+      <span class="crumb" id="crumb">类目</span>
+    </div>
+
+    <h2 class="ptitle"><span id="dtTitle">奶茶咖啡</span></h2>
+    <p class="pdesc" id="dtDesc">选择品牌，查询其覆盖城市</p>
+
+    <p class="field-label" id="fieldLabel">请选择你要查询的品牌</p>
+    <div class="select" id="select">
+      <button class="trigger" id="trigger" aria-haspopup="listbox" aria-expanded="false">
+        <span class="val ph" id="valText">请选择品牌</span>
+        <svg class="caret" viewBox="0 0 24 24"><path d="M6 9.5 12 15.5 18 9.5"/></svg>
+      </button>
+      <div class="panel" id="panel" role="listbox">
+        <div class="search">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.6"/><path d="M16 16l4.2 4.2"/></svg>
+          <input id="q" type="text" placeholder="搜索品牌名称" autocomplete="off">
+        </div>
+        <div class="list" id="list"></div>
+      </div>
+    </div>
+
+    <div class="result">
+      <div class="loading" id="loading">
+        <div class="spin"></div>
+        <p>正在查询城市数据…<small>请稍候</small></p>
+      </div>
+
+      <div class="out" id="out">
+        <div class="out-card">
+          <div class="out-head">
+            <span class="out-name" id="outName"></span>
+            <span class="count" id="outCount"></span>
+          </div>
+          <p class="out-hint">以下城市可查询到该品牌门店</p>
+          <div class="chips" id="chips"></div>
+          <button class="again" id="again">
+            <svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v4.4h-4.4"/></svg>
+            换一个品牌查询
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <p class="foot">数据来源：全国省会城市门店搜索整理 · 仅供查询参考</p>
+  </section>
+</div>
+
+<script>
+const DATA = {
+  milk: [
+    ["蜜雪冰城","上海、深圳、重庆、南京"],
+    ["古茗","重庆、长沙"],
+    ["茶百道","郑州、太原、南宁、昆明、长沙"],
+    ["沪上阿姨","上海"],
+    ["书亦烧仙草","南宁、长沙"],
+    ["益禾堂","石家庄"],
+    ["CoCo都可","西安、重庆、杭州、南京、武汉、成都"],
+    ["一点点","北京、深圳、天津、西安、重庆、杭州、南京、武汉、成都"],
+    ["霸王茶姬","北京、上海、广州、深圳、天津、西安、重庆、杭州、南京、武汉、成都、长沙"],
+    ["茉莉奶白","北京、上海、广州、深圳、天津、西安、重庆、杭州、南京、武汉、成都"],
+    ["爷爷不泡茶","天津、武汉"],
+    ["茶话弄","西安"],
+    ["茉酸奶","南京"],
+    ["柠季手打柠檬茶","深圳、长沙"],
+    ["林里手打柠檬茶","北京、重庆"],
+    ["喜茶","北京、上海、广州、深圳、天津、西安、重庆、杭州、南京、成都"],
+    ["奈雪的茶","北京、广州、深圳、天津、西安、重庆、杭州、南京、武汉、成都"],
+    ["乐乐茶","北京、西安、杭州"],
+    ["瑞幸咖啡","北京、上海、广州、深圳、天津、西安、重庆、杭州、南京、武汉、成都"],
+    ["库迪咖啡","上海、郑州、南宁、乌鲁木齐、长沙"],
+    ["幸运咖","郑州、乌鲁木齐"],
+    ["星巴克","北京、上海、广州、深圳、天津、西安、重庆、杭州、南京、武汉、成都"],
+    ["黄油与面包","北京、广州、深圳、天津、西安、杭州、南京、武汉、成都"],
+    ["DQ","北京、上海、广州、深圳、天津、西安、重庆、杭州、南京、武汉、成都"],
+    ["满记甜品","北京、上海、广州、深圳、天津、西安、重庆"],
+    ["叶煮","北京"],
+    ["玉莲茶楼","北京"],
+    ["鲍师傅糕点","北京、广州、深圳、西安、成都"],
+    ["好利来","北京、广州、深圳、天津、西安、杭州、南京、武汉、成都"],
+    ["天好咖啡(Tims天好咖啡)","北京、广州、杭州"],
+    ["味多美蛋糕","北京"],
+    ["皮爷咖啡","北京、南京"],
+    ["闪电巴黎","北京"],
+    ["M STAND","北京、深圳、天津、西安、成都"],
+    ["拉瓦萨咖啡","北京"],
+    ["阿拉比卡咖啡","北京、成都"],
+    ["鲜芋仙","北京、西安、成都"],
+    ["泽田本家铜锣烧","北京、广州、深圳、杭州"],
+    ["北京稻香村","北京"],
+    ["蓝熊鲜奶","北京"],
+    ["多乐之日","北京"],
+    ["詹记桃酥","上海"],
+    ["包租公老红糖珍珠奶茶","广州、深圳、重庆、杭州、南京、成都"],
+    ["茶救星果蔬茶","广州"],
+    ["柠里手打柠檬茶","广州"],
+    ["丘大叔柠檬茶","广州、深圳"],
+    ["查理一世","广州、深圳"],
+    ["美心西饼","广州"],
+    ["八喜冰淇淋蛋糕","深圳"],
+    ["混果汁","深圳、南京"],
+    ["黑池口感烘培","深圳"],
+    ["元祖食品","西安"],
+    ["益芝酸牛奶","西安"],
+    ["御品轩","西安"],
+    ["Teams天好茶咖啡","西安、武汉"],
+    ["椰咖啡","西安"],
+    ["椰汁酸牛奶","重庆"],
+    ["肯悦咖啡","重庆、武汉、成都、南宁"],
+    ["一鸣真鲜奶吧","杭州、南京"],
+    ["周四晚不止碰到茶","杭州"],
+    ["K22酸奶草莓","杭州"],
+    ["巴西冰淇淋蛋糕","南京、武汉"],
+    ["九牛私家牧场","太原"],
+    ["阿水大杯茶","济南"],
+    ["暗香咖啡","合肥"]
+  ],
+  snack: [
+    ["周黑鸭","北京、天津、广州、西安、重庆、杭州、南京、长沙、南昌、郑州"],
+    ["好想来品牌零食","北京、天津、广州、郑州"],
+    ["良品铺子","深圳、西安、重庆、南京、南昌、郑州"],
+    ["薛记炒货","北京、深圳"],
+    ["来伊份","天津、杭州"],
+    ["零食很忙","长沙、南昌"],
+    ["赵一鸣零食","郑州"],
+    ["好想你枣店","郑州"],
+    ["好想你轻养生活","郑州"],
+    ["座上客","南京"],
+    ["局外人盐焗零食","广州"],
+    ["汉堡王","深圳"]
+  ]
+};
+
+const META = {
+  milk:  {title:"奶茶咖啡", crumb:"MILK TEA & COFFEE", desc:"选择品牌，查询其覆盖城市"},
+  snack: {title:"零食",     crumb:"SNACKS",            desc:"选择品牌，查询其覆盖城市"}
+};
+
+const $ = id => document.getElementById(id);
+const home = $("home"), detail = $("detail");
+const trigger = $("trigger"), panel = $("panel"), listEl = $("list"), q = $("q");
+const valText = $("valText"), loading = $("loading"), out = $("out");
+const chips = $("chips"), outName = $("outName"), outCount = $("outCount");
+let cat = "milk", selected = null, timer = null, hlIndex = -1;
+
+/* ---- 页面切换 ---- */
+function openCat(c){
+  cat = c;
+  $("crumb").textContent = META[c].crumb;
+  $("dtTitle").textContent = META[c].title;
+  $("dtDesc").textContent = META[c].desc;
+  $("fieldLabel").textContent = "请选择你要查询的" + META[c].title + "品牌";
+  resetState();
+  renderList("");
+  home.classList.remove("on");
+  detail.classList.add("on");
+  window.scrollTo({top:0,behavior:"instant"});
+}
+function goHome(){
+  detail.classList.remove("on");
+  home.classList.add("on");
+  window.scrollTo({top:0,behavior:"instant"});
+}
+document.querySelectorAll(".card").forEach(el=>{
+  el.addEventListener("click",()=>openCat(el.dataset.cat));
+});
+$("back").addEventListener("click", goHome);
+
+/* ---- 下拉 ---- */
+function renderList(kw){
+  const data = DATA[cat];
+  const k = kw.trim().toLowerCase();
+  const rows = data.filter(([n])=>!k || n.toLowerCase().includes(k));
+  hlIndex = -1;
+  if(!rows.length){
+    listEl.innerHTML = '<div class="empty">没有找到匹配的品牌</div>';
+    return;
+  }
+  listEl.innerHTML = rows.map(([n,c])=>{
+    const cnt = c.split("、").length;
+    return `<button class="opt" data-name="${n.replace(/"/g,'&quot;')}" role="option">
+      <span>${n}</span><span class="n">${cnt} 城市</span></button>`;
+  }).join("");
+  listEl.querySelectorAll(".opt").forEach(b=>{
+    b.addEventListener("click",()=>pick(b.dataset.name));
+  });
+}
+function toggle(open){
+  panel.classList.toggle("open", open);
+  trigger.setAttribute("aria-expanded", open ? "true" : "false");
+  if(open){
+    q.value = "";
+    renderList("");
+    setTimeout(()=>q.focus(), 120);
+  }
+}
+trigger.addEventListener("click", ()=>toggle(!panel.classList.contains("open")));
+q.addEventListener("input", ()=>renderList(q.value));
+document.addEventListener("click", e=>{
+  if(!$("select").contains(e.target)) toggle(false);
+});
+document.addEventListener("keydown", e=>{
+  if(e.key === "Escape") toggle(false);
+});
+
+/* ---- 选择 → 查询 ---- */
+function pick(name){
+  selected = name;
+  toggle(false);
+  valText.textContent = name;
+  valText.classList.remove("ph");
+  out.classList.remove("on");
+  chips.innerHTML = "";
+  loading.classList.add("on");
+
+  clearTimeout(timer);
+  timer = setTimeout(()=>{
+    const row = DATA[cat].find(r=>r[0] === name);
+    if(!row){ loading.classList.remove("on"); return; }
+    const cities = row[1].split("、").filter(Boolean);
+    outName.textContent = row[0];
+    outCount.textContent = cities.length + " 个城市";
+    chips.innerHTML = cities.map((c,i)=>
+      `<span class="chip" style="animation-delay:${i*55}ms">${c}</span>`
+    ).join("");
+    loading.classList.remove("on");
+    out.classList.add("on");
+  }, 2000);
+}
+
+$("again").addEventListener("click", ()=>{
+  out.classList.remove("on");
+  loading.classList.remove("on");
+  selected = null;
+  valText.textContent = "请选择品牌";
+  valText.classList.add("ph");
+  toggle(true);
+});
+
+function resetState(){
+  selected = null;
+  clearTimeout(timer);
+  loading.classList.remove("on");
+  out.classList.remove("on");
+  chips.innerHTML = "";
+  valText.textContent = "请选择品牌";
+  valText.classList.add("ph");
+  toggle(false);
+}
+</script>
+</body>
+</html>
